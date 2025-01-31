@@ -2,9 +2,9 @@ package src;
 
 public class helloWorld {
 	public static void main(String[] args) {
-		int x = 0.2
-		char y = 7
-		System.out.prinln(breakRule(y,x))
+		int x = 2;
+		int y = 7;
+		System.out.println(breakRule(y,x));
 	}
 	
 	public static int breakRule(int x,int y) {

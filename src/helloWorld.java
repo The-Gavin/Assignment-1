@@ -1,6 +1,6 @@
 package src;
 
-public class helloWorld {
+public class HelloWorld {
 	public static void main(String[] args) {
 		int x = 2;
 		int y = 7;

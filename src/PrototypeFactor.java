@@ -1,27 +1,5 @@
 import project.annotations.NetworkAPIPrototype;
 
-public class PrototypeFactor implements WebServer
-{
-	//chatgpt answer
-	@NetworkAPIPrototype
-    public void processData(String source, String delimiter, String destination) 
-	{
-        // Handle default delimiter if none is provided
-        if (delimiter == null || delimiter.isEmpty()) 
-        {
-            delimiter = ",";  // Default delimiter
-        }
-
-        // Read data from the source
-        String data = readFromSource(source);
-        
-        // Process or transform the data if needed (this can be expanded as per requirements)
-        String processedData = processData(data, delimiter);
-        
-        // Write the output to the destination
-        writeToDestination(processedData, destination);
-    }
-	
 	@NetworkAPIPrototype
 	public void prototype(WebServer server)
 	{
@@ -52,4 +30,3 @@ public class PrototypeFactor implements WebServer
 		// TODO Auto-generated method stub
 		
 	}
-}

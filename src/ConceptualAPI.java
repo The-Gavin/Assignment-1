@@ -1,9 +1,12 @@
-package src.project.annotations;
+package src;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
-public @interface ProcessAPI {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ConceptualAPI {
 	// Marker annotation, should be applied to an interface type
 }

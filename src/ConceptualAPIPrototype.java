@@ -1,4 +1,4 @@
-package src.project.annotations;
+package src;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

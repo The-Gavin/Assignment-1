@@ -2,14 +2,14 @@ package src;
 
 import java.io.File;
 
-import src.project.annotations.NetworkAPIPrototype;
+import src.NetworkAPIPrototype;
 
 public class PrototypeFactor {
 	@NetworkAPIPrototype
 	public void prototype(WebServer server)
 	{
 		//Send integers to webserver
-		//server.intMethod(new File(server.toString()));
+		//server.intMethod(f);
 		server.factorCalc();
 		server.outputSplit();
 		//specify the output separation

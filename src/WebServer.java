@@ -2,7 +2,7 @@ package src;
 
 import java.io.File;
 
-import src.project.annotations.NetworkAPI;
+import src.NetworkAPI;
 
 @NetworkAPI
 public interface WebServer

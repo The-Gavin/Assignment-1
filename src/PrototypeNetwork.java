@@ -7,7 +7,6 @@ public class PrototypeNetwork
 	{
 		//Send integers to webserver
 		UserData data = server.intMethod();
-		server.factorCalc();
 		server.outputSplit();
 		//specify the output separation
 

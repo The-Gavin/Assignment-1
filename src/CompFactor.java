@@ -1,7 +1,7 @@
 import project.annotations.ConceptualAPI;
 
 @ConceptualAPI
-public interface Engine
+public interface CompFactor
 {
 	// output the integer followed by each of its factors
 	public String printFactor();

@@ -3,11 +3,11 @@ import project.annotations.ConceptualAPIPrototype;
 public class PrototypeFactor
 {
 	@ConceptualAPIPrototype
-	public void prototype(Engine engine)
+	public void prototype(CompFactor factoring)
 	{
 		//Component for initialization, reading, and writing
-		UserData output = engine.printFactor();
+		UserData output = factoring.printFactor();
 		//component for computation
-		UserData data = engine.factorCalc();
+		UserData data = factoring.factorCalc();
 	}
 }

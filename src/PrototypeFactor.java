@@ -6,8 +6,8 @@ public class PrototypeFactor
 	public void prototype(CompFactor factoring)
 	{
 		//Component for initialization, reading, and writing
-		UserData output = factoring.printFactor();
+		String output = factoring.printFactor();
 		//component for computation
-		UserData data = factoring.factorCalc();
+		int[] data = factoring.factorCalc();
 	}
 }

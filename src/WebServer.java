@@ -1,8 +1,7 @@
 import project.annotations.NetworkAPI;
 
 @NetworkAPI
-public interface WebServer
-{
+public interface WebServer {
 	//Take in a number of integers from the user
 	public DataResponse sendUserData(UserData data);
 	//Send the factors for calculation

@@ -1,10 +1,8 @@
 import project.annotations.NetworkAPIPrototype;
 
-public class PrototypeNetwork
-{
+public class PrototypeNetwork {
 	@NetworkAPIPrototype
-	public void prototype(WebServer server)
-	{
+	public void prototype(WebServer server) {
 		//Check to see if the user's data has been received
 		DataResponse dataReceived = server.sendUserData(null);
 		//Take in the user's int value(s)

@@ -1,10 +1,8 @@
 import project.annotations.ConceptualAPIPrototype;
 
-public class PrototypeFactor
-{
+public class PrototypeFactor {
 	@ConceptualAPIPrototype
-	public void prototype(CompFactor factoring)
-	{
+	public void prototype(CompFactor factoring)	{
 		//Component for initialization, reading, and writing
 		String output = factoring.printFactor();
 		//component for computation

@@ -7,10 +7,10 @@ public class PrototypeProcess {
 		ReadResponse readResponse = readWriter.readData(new InputSource());
 
 		//Send data in form of integer stream to computation component
-		SendResponse sendResponse = readWriter.SendDataStream(new DataDestination());
+		SendResponse sendResponse = readWriter.sendDataStream(new DataDestination());
 
 		//Receive processed data from computation component
-		ReceiveResponse receiveResponse = readWriter.ReceiveData(new DataSource());
+		ReceiveResponse receiveResponse = readWriter.receiveData(new DataSource());
 
 		//Write data to specified locations
 		WriteResponse writeResponse = readWriter.writeData(new OutputDestination());

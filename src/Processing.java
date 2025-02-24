@@ -6,10 +6,10 @@ public interface Processing {
     ReadResponse readData(InputSource inputSource);
 
 	//Pass data in form of integer stream to computation component
-    SendResponse SendDataStream(DataDestination destination);
+    SendResponse sendDataStream(DataDestination destination);
 
     //Receive processed data from computation component
-    ReceiveResponse ReceiveData(DataSource source);
+    ReceiveResponse receiveData(DataSource source);
 
     //Write data to data storage system and user
     WriteResponse writeData(OutputDestination outputDestination);

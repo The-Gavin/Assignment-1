@@ -1,5 +1,5 @@
 
-public class CompImplement implements CompFactor{
+/*public class CompImplement implements CompFactor{
 
 	public String printFactor() {
 		return null;
@@ -9,4 +9,4 @@ public class CompImplement implements CompFactor{
 		return null;
 	}
 
-}
+}*/

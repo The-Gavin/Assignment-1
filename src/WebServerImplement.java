@@ -1,5 +1,5 @@
 
-public class WebServerImplement implements WebServer {
+/*public class WebServerImplement implements WebServer {
 
 	public DataResponse sendUserData(UserData data) {
 		return null;
@@ -13,4 +13,4 @@ public class WebServerImplement implements WebServer {
 		return null;
 	}
 
-}
+}*/

@@ -1,12 +1,20 @@
 
-public class CompImplement implements CompFactor{
+public class CompImplement implements CompFactor {
+	Processing processingComponent;
+	WebServer webServerComponent;
 
-	public String printFactor() {
-		return null;
+	//Initialize computation
+	public InitializationResponse initializeComputation(ComputationComponent computationComponent) {
+		return new InitializationResponse();
 	}
 
-	public int[] factorCalc() {
-		return null;
+	//Read integer stream
+	public ReadStreamResponse readStream(StreamSource streamSource) {
+		return new ReadStreamResponse();
 	}
 
+	//Write output (integer followed by its factors) to data store
+	public WriteOutputResponse writeOutput(DataStore dataStore) {
+		return new WriteOutputResponse();
+	}
 }

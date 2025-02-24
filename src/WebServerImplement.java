@@ -5,7 +5,7 @@ public class WebServerImplement implements WebServer {
 		return null;
 	}
 
-	public DataResponse sendFactors(FactorStream factor) {
+	public DataResponse receiveFactors(FactorStream factor) {
 		return null;
 	}
 

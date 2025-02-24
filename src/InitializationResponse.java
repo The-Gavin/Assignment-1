@@ -1,3 +1,3 @@
-public interface InitializationResponse {
+public class InitializationResponse {
     //TBD
 }

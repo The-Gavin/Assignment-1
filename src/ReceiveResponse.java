@@ -1,3 +1,3 @@
-public interface ReceiveResponse {
+public class ReceiveResponse {
     //TBD
 }

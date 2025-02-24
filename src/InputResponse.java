@@ -1,3 +1,3 @@
-public interface InputResponse {
+public class InputResponse {
     //TBD
 }

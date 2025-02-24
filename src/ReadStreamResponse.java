@@ -1,3 +1,3 @@
-public interface ReadStreamResponse {
+public class ReadStreamResponse {
     //TBD
 }

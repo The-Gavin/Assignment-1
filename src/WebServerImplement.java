@@ -1,16 +1,27 @@
 
-/*public class WebServerImplement implements WebServer {
+public class WebServerImplement implements WebServer {
+    CompFactor computationComponent;
+    Processing processingComponent;
 
-	public DataResponse sendUserData(UserData data) {
-		return null;
-	}
+    //Take in a number of integers from the user (provide input source)
+    public InputResponse provideInputSource(InputSource inputSource) {
+        return new InputResponse();
+    }
 
-	public DataResponse receiveFactors(FactorStream factor) {
-		return null;
-	}
+    //Receive the factors for calculation (provide output destination)
+    public OutputResponse provideOutputDestination(OutputDestination outputDestination) {
+        return new OutputResponse();
+    }
 
-	public DataResponse setDelimiter(char delim) {
-		return null;
-	}
+    //Take in the character specified by the user as delimiter
+    public DelimiterResponse setDelimiter(char delimiter) {
+        return new DelimiterResponse();
+    }
 
-}*/
+    //(Or opt for default delimiters)
+    public DelimiterResponse setDelimiter() {
+        return new DelimiterResponse();
+        //(default delimiter TBD)
+    }
+
+}

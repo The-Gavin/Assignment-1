@@ -1,3 +1,3 @@
-public interface WriteResponse {
+public class WriteResponse {
     //TBD
 }

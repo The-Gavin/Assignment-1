@@ -1,3 +1,3 @@
-public interface SendResponse {
+public class SendResponse {
     //TBD
 }

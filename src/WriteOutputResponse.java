@@ -1,3 +1,3 @@
-public interface WriteOutputResponse {
+public class WriteOutputResponse {
     //TBD
 }

@@ -1,3 +1,3 @@
-public interface DelimiterResponse {
+public class DelimiterResponse {
     //TBD
 }

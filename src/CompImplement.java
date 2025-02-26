@@ -1,3 +1,4 @@
+package src;
 
 public class CompImplement implements CompFactor {
 	Processing processingComponent;

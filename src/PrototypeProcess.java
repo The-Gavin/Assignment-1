@@ -1,4 +1,6 @@
-import project.annotations.ProcessAPIPrototype;
+package src;
+
+import src.project.annotations.ProcessAPIPrototype;
 
 public class PrototypeProcess {
 	@ProcessAPIPrototype

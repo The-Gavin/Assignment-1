@@ -1,3 +1,15 @@
+package src;
+
+import src.Response.Status;
+
 public class ReceiveResponse {
-    //TBD
+	private final Status result;
+	
+	public ReceiveResponse(Status s) {
+		this.result = s;
+	}
+	
+	public Status getStatus() {
+		return result;
+	} 
 }

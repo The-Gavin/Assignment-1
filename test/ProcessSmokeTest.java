@@ -1,6 +1,12 @@
 package test;
 
 import src.Response.Status;
+import src.Processing;
+import src.InputSource;
+import src.DataDestination;
+import src.DataSource;
+import src.ProcessingImplement;
+import src.OutputDestination;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

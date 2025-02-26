@@ -1,6 +1,5 @@
 package test;
 
-import src.*;
 import src.Response.Status;
 
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +12,7 @@ public class ProcessSmokeTest {
 	public void readSmokeTest() throws Exception {
 		Processing data = new ProcessingImplement();
 		InputSource userData = Mockito.mock(InputSource.class);
-		Assertions.assertEquals(data.readData(userData).getStatus(),Status.SUCCESS);		
+		Assertions.assertEquals(data.readData(userData).getStatus(), Status.SUCCESS);		
 	}
 	
 	@Test

@@ -4,7 +4,7 @@ public interface Response {
 	
 	public static enum Status {
 		SUCCESS,
-		Failure;
+		FAILURE;
 	}
 	
 	public Status getStatus();

@@ -17,8 +17,9 @@ public class DataStorage implements Processing{
 	public ReadResponse readData(InputSource inputSource) {
 		// TODO Auto-generated method stub
 		List<Integer> list = new ArrayList<>();
+		Scanner sc;
 		try {
-			Scanner sc = new Scanner(inputSource.getFile());
+			sc = new Scanner(inputSource.getFile());
 		}catch (Exception e) {
 			return new ReadResponse(Status.FAILURE);
 		}

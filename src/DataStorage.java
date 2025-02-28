@@ -17,7 +17,11 @@ public class DataStorage implements Processing{
 	public ReadResponse readData(InputSource inputSource) {
 		// TODO Auto-generated method stub
 		List<Integer> list = new ArrayList<>();
-		Scanner sc = new Scanner(inputSource.getFile());
+		try {
+			Scanner sc = new Scanner(inputSource.getFile());
+		}catch (Exception e) {
+			return new ReadResponse(Status.FAILURE);
+		}
 		while (sc.hasNext()) {
 			String line = sc.nextLine();
 			String[] nums = line.split(",");
@@ -52,7 +56,11 @@ public class DataStorage implements Processing{
 			output.append(';');
 		}
 		output.deleteCharAt(output.length()-1);
-		new FileWriter(outputDestination.getFile()).write(serializedData.toString());
+		try {
+			new FileWriter(outputDestination.getFile()).write(serializedData.toString());
+		} catch (Exception e) {
+			return new WriteResponse(Status.FAILURE);
+		}
 		return new WriteResponse(Status.SUCCESS);
 	}
 

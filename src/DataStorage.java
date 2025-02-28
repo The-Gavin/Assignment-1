@@ -11,17 +11,17 @@ import src.Response.Status;
 
 public class DataStorage implements Processing{
 
-	private Map<Integer,List<Integer>> data;
+	private Map<Integer, List<Integer>> data;
 	
 	@Override
 	public ReadResponse readData(InputSource inputSource) {
 		// TODO Auto-generated method stub
 		List<Integer> list = new ArrayList<>();
 		Scanner sc = new Scanner(inputSource.getFile());
-		while(sc.hasNext()) {
+		while (sc.hasNext()) {
 			String line = sc.nextLine();
 			String[] nums = line.split(",");
-			for(String s: nums) {
+			for (String s: nums) {
 				list.add(Integer.parseInt(s));
 			}
 		}
@@ -37,17 +37,17 @@ public class DataStorage implements Processing{
 	public ReceiveResponse receiveData(DataSource source) {
 		// TODO Auto-generated method stub
 		this.data = source.getData();
-		return Status.SUCCESS;
+		return new ReceiveResponse(Status.SUCCESS);
 	}
 
 	@Override
 	public WriteResponse writeData(OutputDestination outputDestination) {
 		List<String> serializedData = new ArrayList<>();
-		for(Integer num: data.keySet()) {
+		for (Integer num: data.keySet()) {
 			serializedData.add(serialize(num, data.get(num)));
 		}
 		StringBuilder output = new StringBuilder();
-		for(String s: serializedData) {
+		for (String s: serializedData) {
 			output.append(s);
 			output.append(';');
 		}
@@ -59,7 +59,7 @@ public class DataStorage implements Processing{
 	private String serialize(int num, List<Integer> factors) {
 		StringBuilder serializedData = new StringBuilder(Integer.toString(num));
 		serializedData.append(':');
-		for(int i: factors) {
+		for (int i: factors) {
 			serializedData.append(Integer.toString(i));
 			serializedData.append(',');
 		}

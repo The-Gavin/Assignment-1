@@ -5,7 +5,7 @@ import java.util.List;
 public class ReadResponse implements Response{
     //TBD
 	private final Status result;
-	private final List<Integer> list = null;
+	private List<Integer> list = null;
 	
 	public ReadResponse(Status s) {
 		this.result = s;

@@ -1,3 +1,15 @@
+import java.io.File;
+
 public class OutputDestination {
-    //TBD
+
+    private File file;
+
+    public OutputDestination(File f) {
+        this.file = f;
+    }
+
+
+    public File getFile() {
+        return file;
+    }
 }

@@ -1,4 +1,4 @@
-import project.annotations.NetworkAPI;
+import src.project.annotations.NetworkAPI;
 
 @NetworkAPI
 public interface WebServer {

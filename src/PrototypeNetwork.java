@@ -1,5 +1,3 @@
-package src;
-
 import java.io.File;
 
 import src.project.annotations.NetworkAPIPrototype;

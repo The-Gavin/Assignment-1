@@ -1,13 +1,8 @@
-package src;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import src.Response.Status;
 
 public class DataStorage implements Processing{
 
@@ -21,7 +16,7 @@ public class DataStorage implements Processing{
 		try {
 			sc = new Scanner(inputSource.getFile());
 		}catch (Exception e) {
-			return new ReadResponse(Status.FAILURE);
+			return new ReadResponse(Response.Status.FAILURE);
 		}
 		while (sc.hasNext()) {
 			String line = sc.nextLine();
@@ -30,7 +25,7 @@ public class DataStorage implements Processing{
 				list.add(Integer.parseInt(s));
 			}
 		}
-		return new ReadResponse(list, Status.SUCCESS);
+		return new ReadResponse(list, Response.Status.SUCCESS);
 	}
 
 	@Override
@@ -42,7 +37,7 @@ public class DataStorage implements Processing{
 	public ReceiveResponse receiveData(DataSource source) {
 		// TODO Auto-generated method stub
 		this.data = source.getData();
-		return new ReceiveResponse(Status.SUCCESS);
+		return new ReceiveResponse(Response.Status.SUCCESS);
 	}
 
 	@Override
@@ -60,9 +55,9 @@ public class DataStorage implements Processing{
 		try {
 			new FileWriter(outputDestination.getFile()).write(serializedData.toString());
 		} catch (Exception e) {
-			return new WriteResponse(Status.FAILURE);
+			return new WriteResponse(Response.Status.FAILURE);
 		}
-		return new WriteResponse(Status.SUCCESS);
+		return new WriteResponse(Response.Status.SUCCESS);
 	}
 
 	private String serialize(int num, List<Integer> factors) {

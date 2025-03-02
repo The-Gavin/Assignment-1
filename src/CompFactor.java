@@ -1,5 +1,3 @@
-package src;
-
 import src.project.annotations.ConceptualAPI;
 
 @ConceptualAPI

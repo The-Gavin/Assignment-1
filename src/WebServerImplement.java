@@ -1,5 +1,3 @@
-package src;
-
 public class WebServerImplement implements WebServer {
     CompFactor computationComponent;
     Processing processingComponent;

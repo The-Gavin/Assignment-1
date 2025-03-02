@@ -1,14 +1,11 @@
-package src;
-import src.Response.Status;
-
 public class WriteResponse {
-	private final Status result;
-	
-	public WriteResponse(Status s) {
-		this.result = s;
-	}
-	
-	public Status getStatus() {
-		return result;
-	} 
+    private final Response.Status result;
+
+    public WriteResponse(Response.Status s) {
+        this.result = s;
+    }
+
+    public Response.Status getStatus() {
+        return result;
+    }
 }

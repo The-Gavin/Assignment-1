@@ -14,7 +14,7 @@ public class DataStorage implements Processing{
 		List<Integer> list = new ArrayList<>();
 		Scanner sc;
 		try {
-			if(inputSource.getFile().exists() && inputSource.getFile().canRead()) {
+			if (inputSource.getFile().exists() && inputSource.getFile().canRead()) {
 				sc = new Scanner(inputSource.getFile());
 			}else {
 				throw new Exception("File not found or can not be read");  
@@ -30,7 +30,7 @@ public class DataStorage implements Processing{
 			}
 		}
 		sc.close();
-		if(list.isEmpty()) {
+		if (list.isEmpty()) {
 			return new ReadResponse(Response.Status.FAILURE);
 		}
 		return new ReadResponse(list, Response.Status.SUCCESS);
@@ -44,7 +44,7 @@ public class DataStorage implements Processing{
 	@Override
 	public ReceiveResponse receiveData(DataSource source) {
 		// TODO Auto-generated method stub
-		if(source.getData().isEmpty()) {
+		if (source.getData().isEmpty()) {
 			return new ReceiveResponse(Response.Status.FAILURE);
 		}
 		this.data = source.getData();
@@ -53,7 +53,7 @@ public class DataStorage implements Processing{
 
 	@Override
 	public WriteResponse writeData(OutputDestination outputDestination) {
-		if(!outputDestination.getFile().exists() || !outputDestination.getFile().canWrite()) {
+		if (!outputDestination.getFile().exists() || !outputDestination.getFile().canWrite()) {
 			return new WriteResponse(Response.Status.FAILURE);
 		}
 		List<String> serializedData = new ArrayList<>();
@@ -67,7 +67,7 @@ public class DataStorage implements Processing{
 		}
 		try {
 			output.deleteCharAt(output.length()-1);
-		}catch(Exception e) {
+		}catch (Exception e) {
 			return new WriteResponse(Response.Status.FAILURE);
 		}
 		try {

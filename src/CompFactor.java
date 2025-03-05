@@ -1,4 +1,4 @@
-import src.project.annotations.ConceptualAPI;
+import project.annotations.ConceptualAPI;
 
 @ConceptualAPI
 public interface CompFactor {

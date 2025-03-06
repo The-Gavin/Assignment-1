@@ -1,3 +1,11 @@
 public class ReadStreamResponse {
-    //TBD
+    private final Response.Status result;
+
+    public ReadStreamResponse(Response.Status s) {
+        this.result = s;
+    }
+
+    public Response.Status getStatus() {
+        return result;
+    }
 }

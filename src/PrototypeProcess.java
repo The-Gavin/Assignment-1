@@ -1,6 +1,6 @@
 import java.io.File;
 
-import src.project.annotations.ProcessAPIPrototype;
+import project.annotations.ProcessAPIPrototype;
 
 public class PrototypeProcess {
 	@ProcessAPIPrototype

@@ -9,11 +9,9 @@ import org.mockito.Mockito;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class NetworkTest 
-{
+public class NetworkTest {
 	@Test
-	public void smokeTest() 
-	{
+	public void smokeTest() {
 		// mock out the dependencies so that we're just checking the ComputationCoordinator
 		DataStore dataStore = mock(DataStore.class);
 		CompFactor compFactor = mock(CompFactor.class);

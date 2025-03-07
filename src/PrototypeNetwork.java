@@ -1,6 +1,7 @@
 import java.io.File;
+import project.annotations.NetworkAPIPrototype;
 
-import src.project.annotations.NetworkAPIPrototype;
+import project.annotations.NetworkAPIPrototype;
 
 public class PrototypeNetwork {
 	@NetworkAPIPrototype

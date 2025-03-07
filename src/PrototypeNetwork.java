@@ -1,8 +1,6 @@
 import java.io.File;
 import project.annotations.NetworkAPIPrototype;
 
-import project.annotations.NetworkAPIPrototype;
-
 public class PrototypeNetwork {
 	@NetworkAPIPrototype
 	public void prototype(WebServer server) {

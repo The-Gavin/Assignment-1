@@ -1,8 +1,6 @@
 import java.io.File;
 import project.annotations.ProcessAPIPrototype;
 
-import project.annotations.ProcessAPIPrototype;
-
 public class PrototypeProcess {
 	@ProcessAPIPrototype
 	public void prototype(Processing readWriter) {

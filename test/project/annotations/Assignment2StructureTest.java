@@ -1,4 +1,4 @@
-package project.annotations;
+package test.project.annotations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

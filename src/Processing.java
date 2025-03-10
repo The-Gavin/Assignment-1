@@ -1,4 +1,4 @@
-import project.annotations.ProcessAPI;
+import src.project.annotations.ProcessAPI;
 
 @ProcessAPI
 public interface Processing {

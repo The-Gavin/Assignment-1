@@ -14,7 +14,11 @@ public class DataStorage implements Processing{
 		List<Integer> list = new ArrayList<>();
 		Scanner sc;
 		try {
-			sc = new Scanner(inputSource.getFile());
+			if (inputSource.getFile().exists() && inputSource.getFile().canRead()) {
+				sc = new Scanner(inputSource.getFile());
+			}else {
+				throw new Exception("File not found or can not be read");  
+			}
 		}catch (Exception e) {
 			return new ReadResponse(Response.Status.FAILURE);
 		}
@@ -24,6 +28,10 @@ public class DataStorage implements Processing{
 			for (String s: nums) {
 				list.add(Integer.parseInt(s));
 			}
+		}
+		sc.close();
+		if (list.isEmpty()) {
+			return new ReadResponse(Response.Status.FAILURE);
 		}
 		return new ReadResponse(list, Response.Status.SUCCESS);
 	}
@@ -36,12 +44,18 @@ public class DataStorage implements Processing{
 	@Override
 	public ReceiveResponse receiveData(DataSource source) {
 		// TODO Auto-generated method stub
+		if (source.getData().isEmpty()) {
+			return new ReceiveResponse(Response.Status.FAILURE);
+		}
 		this.data = source.getData();
 		return new ReceiveResponse(Response.Status.SUCCESS);
 	}
 
 	@Override
 	public WriteResponse writeData(OutputDestination outputDestination) {
+		if (!outputDestination.getFile().exists() || !outputDestination.getFile().canWrite()) {
+			return new WriteResponse(Response.Status.FAILURE);
+		}
 		List<String> serializedData = new ArrayList<>();
 		for (Integer num: data.keySet()) {
 			serializedData.add(serialize(num, data.get(num)));
@@ -51,9 +65,15 @@ public class DataStorage implements Processing{
 			output.append(s);
 			output.append(';');
 		}
-		output.deleteCharAt(output.length()-1);
 		try {
-			new FileWriter(outputDestination.getFile()).write(serializedData.toString());
+			output.deleteCharAt(output.length()-1);
+		}catch (Exception e) {
+			return new WriteResponse(Response.Status.FAILURE);
+		}
+		try {
+			FileWriter writer = new FileWriter(outputDestination.getFile());
+			writer.write(output.toString());
+			writer.close();
 		} catch (Exception e) {
 			return new WriteResponse(Response.Status.FAILURE);
 		}

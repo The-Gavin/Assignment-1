@@ -1,4 +1,4 @@
-import src.project.annotations.ConceptualAPIPrototype;
+import project.annotations.ConceptualAPIPrototype;
 
 public class PrototypeFactor {
 	@ConceptualAPIPrototype

@@ -23,4 +23,10 @@ public class WebServerImplement implements WebServer {
         //(default delimiter TBD)
     }
 
+	@Override
+	public ComputeResult compute(ComputeRequest mockRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -1,8 +1,10 @@
-package project.annotations;
+
 //package project.
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,7 @@ public class NetworkTest {
 		CompFactor compFactor = mock(CompFactor.class);
 		
 		when(dataStore.read(any(InputConfig.class)))
-		   .thenReturn(new ReadResponse(new ArrayList<Integer>()));
+		   .thenReturn(new ReadResponse(new ArrayList<Integer>(), Response.Status.SUCCESS));
 		
 		WebServer server = new CoordinatorImpl(dataStore, compFactor);
 		
@@ -33,6 +35,6 @@ public class NetworkTest {
 		ComputeResult result = server.compute(mockRequest);
 		
 		// simple check for right now - just say the result must be successful
-		Assertions.assertEquals(result.getStatus(), ComputeResult.ComputeResultStatus.SUCCESS);
+		Assertions.assertEquals(result.getStatus(), Response.Status.SUCCESS);
 	}
 }

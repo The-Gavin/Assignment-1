@@ -1,3 +1,5 @@
 public class DataStore {
-    //TBD
+	public ReadResponse read(InputConfig i) {
+		return new ReadResponse(Response.Status.SUCCESS);
+	}
 }

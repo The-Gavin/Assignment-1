@@ -1,4 +1,4 @@
-public class WebServerImplement implements WebServer {
+public abstract class WebServerImplement implements WebServer {
     CompFactor computationComponent;
     Processing processingComponent;
 

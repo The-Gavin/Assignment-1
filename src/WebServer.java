@@ -11,4 +11,6 @@ public interface WebServer {
 	//Take in the character specified by the user as delimiter
 	//(Or opt for default delimiters)
 	DelimiterResponse setDelimiter(char delimiter);
+
+	ComputeResult compute(ComputeRequest mockRequest);
 }

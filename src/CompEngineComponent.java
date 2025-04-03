@@ -17,7 +17,7 @@ public class CompEngineComponent implements CompFactor {
 	public ReadStreamResponse readStream(StreamSource streamSource) {
 		// TODO Auto-generated method stub
 		ReadStreamResponse check = streamSource.containsData();
-		if(check.equals(Response.Status.FAILURE)){
+		if (check.equals(Response.Status.FAILURE)){
 			return check;
 		}
 		this.data = streamSource;

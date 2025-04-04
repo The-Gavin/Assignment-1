@@ -7,11 +7,11 @@ public class CoordinationComponent implements WebServer {
     
     boolean initialize = false;
    
-    public CoordinationComponent () {
+    public CoordinationComponent() {
     	
     }
     
-    public InitializationResponse coordinationInitializer (CompFactor computationComponent, Processing processingComponent) {
+    public InitializationResponse coordinationInitializer(CompFactor computationComponent, Processing processingComponent) {
     	this.computationComponent = computationComponent;
     	this.processingComponent = processingComponent;
     	

@@ -33,14 +33,14 @@ public class NetworkTest {
 		try {
 			input = server.provideInputSource(inputSource);
 		} catch (Exception e) {
-			
+			System.out.println(e);
 		}
 		
 		OutputResponse output = new OutputResponse(Response.Status.FAILURE);
 		try {
 			output = server.provideOutputDestination(outputDestination);
 		} catch (Exception e) {
-			
+			System.out.println(e);
 		}
 		
 		Assertions.assertEquals(input.getStatus(), Response.Status.SUCCESS);

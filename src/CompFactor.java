@@ -3,7 +3,7 @@ import project.annotations.ConceptualAPI;
 @ConceptualAPI
 public interface CompFactor {
 	//Initialize computation
-	InitializationResponse initializeComputation(ComputationComponent computationComponent);
+	InitializationResponse initializeComputation();
 
 	//Read integer stream
 	ReadStreamResponse readStream(StreamSource streamSource);

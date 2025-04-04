@@ -4,7 +4,7 @@ public class PrototypeFactor {
 	@ConceptualAPIPrototype
 	public void prototype(CompFactor factoring)	{
 		//Initialize computation
-		InitializationResponse initializationResponse = factoring.initializeComputation(new ComputationComponent());
+		InitializationResponse initializationResponse = factoring.initializeComputation();
 
 		//Read integer stream
 		ReadStreamResponse readStreamResponse = factoring.readStream(new StreamSource());

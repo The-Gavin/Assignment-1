@@ -7,7 +7,7 @@ public class CompImplementTest {
     public void initializeSmokeTest() throws Exception {
         CompFactor compFactor = new CompImplement();
         ComputationComponent computationComponent = Mockito.mock(ComputationComponent.class);
-        Assertions.assertEquals(compFactor.initializeComputation(computationComponent).getStatus(), Response.Status.SUCCESS);
+        Assertions.assertEquals(compFactor.initializeComputation().getStatus(), Response.Status.SUCCESS);
     }
 
     @Test

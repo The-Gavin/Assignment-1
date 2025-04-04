@@ -6,9 +6,9 @@ public class CompEngineComponent implements CompFactor {
 	OutputData outputData;
 	//Initializes ComputationComponent to later receive data from StreamSource
 	@Override
-	public InitializationResponse initializeComputation(ComputationComponent computationComponent) {
+	public InitializationResponse initializeComputation() {
 		// TODO Auto-generated method stub
-		this.computationComponent = computationComponent;
+		this.computationComponent = new ComputationComponent();
 		return this.computationComponent.initialize();
 	}
 

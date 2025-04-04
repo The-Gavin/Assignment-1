@@ -3,7 +3,7 @@ public class CompImplement implements CompFactor {
 	WebServer webServerComponent;
 
 	//Initialize computation
-	public InitializationResponse initializeComputation(ComputationComponent computationComponent) {
+	public InitializationResponse initializeComputation() {
 		return new InitializationResponse(Response.Status.SUCCESS);
 	}
 

@@ -21,20 +21,29 @@ public class NetworkTest {
 		// mock out the dependencies so that we're just checking the ComputationCoordinator
 		DataStore dataStore = mock(DataStore.class);
 		CompFactor compFactor = mock(CompFactor.class);
+		InputSource inputSource = mock(InputSource.class);
+		OutputDestination outputDestination = mock(OutputDestination.class);
 		
 		when(dataStore.read(any(InputConfig.class)))
 		   .thenReturn(new ReadResponse(new ArrayList<Integer>(), Response.Status.SUCCESS));
 		
-		WebServer server = new CoordinatorImpl(dataStore, compFactor);
+		WebServer server = new WebServerImplement();
 		
-		// mock out the parameters
-		ComputeRequest mockRequest = mock(ComputeRequest.class);
-        when(mockRequest.getInputConfig()).thenReturn(mock(InputConfig.class));
-        when(mockRequest.getOutputConfig()).thenReturn(mock(OutputConfig.class));
-        
-		ComputeResult result = server.compute(mockRequest);
+		InputResponse input = new InputResponse(Response.Status.FAILURE);
+		try {
+			input = server.provideInputSource(inputSource);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		
-		// simple check for right now - just say the result must be successful
-		Assertions.assertEquals(result.getStatus(), Response.Status.SUCCESS);
+		OutputResponse output = new OutputResponse(Response.Status.FAILURE);
+		try {
+			output = server.provideOutputDestination(outputDestination);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		Assertions.assertEquals(input.getStatus(), Response.Status.SUCCESS);
+		Assertions.assertEquals(output.getStatus(), Response.Status.SUCCESS);
 	}
 }

@@ -2,6 +2,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import Implementations.CompImplement;
+import Interfaces.CompFactor;
+import Interfaces.Response;
+import src.ComputationComponent;
+import src.DataStore;
+import src.StreamSource;
+
 public class CompImplementTest {
     @Test
     public void initializeSmokeTest() throws Exception {

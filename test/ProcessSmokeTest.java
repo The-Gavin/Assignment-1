@@ -2,6 +2,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import Implementations.ProcessingImplement;
+import Interfaces.Processing;
+import Interfaces.Response;
+import src.DataDestination;
+import src.DataSource;
+import src.InputSource;
+import src.OutputDestination;
+
 public class ProcessSmokeTest {
 
     @Test

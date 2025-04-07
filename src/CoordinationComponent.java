@@ -1,3 +1,4 @@
+import java.util.Optional;
 
 public class CoordinationComponent implements WebServer {
 	
@@ -6,14 +7,18 @@ public class CoordinationComponent implements WebServer {
     Processing processingComponent;
     
     boolean initialize = false;
-   
-    public CoordinationComponent() {
-    	
+    
+    public static Optional<CoordinationComponent> initialize() {
+    	CoordinationComponent newComponent = new CoordinationComponent();
+    	if(newComponent.coordinationInitializer().getStatus().equals(Response.Status.SUCCESS)) {
+    		return Optional.of(newComponent);
+    	}
+    	return Optional.empty();
     }
     
-    public InitializationResponse coordinationInitializer(CompFactor computationComponent, Processing processingComponent) {
-    	this.computationComponent = computationComponent;
-    	this.processingComponent = processingComponent;
+    public InitializationResponse coordinationInitializer() {
+    	this.computationComponent = new CompEngineComponent();
+    	this.processingComponent = new DataStorage();
     	
     	InitializationResponse response = this.computationComponent.initializeComputation();
     	
@@ -26,11 +31,12 @@ public class CoordinationComponent implements WebServer {
 
 	@Override
 	public InputResponse provideInputSource(InputSource inputSource) throws Exception{
-		if (initialize) {
+		if (!initialize) {
 			throw new Exception("Component Not Initialized");
 		}
 			return new InputResponse(processingComponent.readData(inputSource).getStatus());
 	}
+	
 
 	@Override
 	public OutputResponse provideOutputDestination(OutputDestination outputDestination) throws Exception{

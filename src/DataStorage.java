@@ -1,24 +1,32 @@
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class DataStorage implements Processing{
 
-	private Map<Integer, List<Integer>> data;
+	private Map<Integer, List<Integer>> data = new HashMap<>();
 	
 	@Override
 	public ReadResponse readData(InputSource inputSource) {
 		// TODO Auto-generated method stub
+		ReadResponse parsedData = parseData(inputSource);
+		if(parsedData.getStatus().equals(Response.Status.FAILURE)) {
+			return parsedData;
+		}
+		for(Integer n: parsedData.gerResponse()) {
+			data.put(n, new ArrayList<Integer>());
+		}
+		return new ReadResponse(Response.Status.SUCCESS);
+	}
+	
+	private ReadResponse parseData(InputSource inputSource) {
 		List<Integer> list = new ArrayList<>();
 		Scanner sc;
 		try {
-			if (inputSource.getFile().exists() && inputSource.getFile().canRead()) {
-				sc = new Scanner(inputSource.getFile());
-			}else {
-				throw new Exception("File not found or can not be read");  
-			}
+			sc = new Scanner(inputSource.getFile());  
 		}catch (Exception e) {
 			return new ReadResponse(Response.Status.FAILURE);
 		}

@@ -15,5 +15,5 @@ public interface CompFactor {
 	FactorResponse readStream(StreamSource streamSource);
 
 	//Write output (integer followed by its factors) to data store
-	WriteOutputResponse writeOutput(DataStore dataStore);
+	
 }

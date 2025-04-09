@@ -3,6 +3,7 @@ package Interfaces;
 import project.annotations.NetworkAPI;
 import src.InputSource;
 import src.OutputDestination;
+import Responses.FactorResponse;
 import Responses.InitializationResponse;
 import Responses.OutputResponse;
 import Responses.InputResponse;
@@ -17,5 +18,7 @@ public interface WebServer {
 
 	//Receive the factors for calculation (provide output destination)
 	OutputResponse provideOutputDestination(OutputDestination outputDestination) throws Exception;
+
+	FactorResponse factor();
 
 }

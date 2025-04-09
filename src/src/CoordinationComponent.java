@@ -52,9 +52,20 @@ public class CoordinationComponent implements WebServer {
 
 	@Override
 	public OutputResponse provideOutputDestination(OutputDestination outputDestination) throws Exception{
-		if (initialize) {
+		if (!initialize) {
 			throw new Exception("Component Not Initialized");
 		}
-			return new OutputResponse(processingComponent.writeData(outputDestination).getStatus());
+			return new OutputResponse(processingComponent.getOutputDestination(outputDestination).getStatus());
+	}
+	
+	public FactorResponse factor() {
+		FactorResponse factoringResponse = computationComponent.readStream(processingComponent.getStream());
+		if(factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
+			return factoringResponse;
+		}
+		if( processingComponent.receiveData(new DataSource(factoringResponse.getFactors())).getStatus().equals(factoringResponse.getStatus())) {
+			return factoringResponse;
+		}
+		return new FactorResponse(Response.Status.FAILURE);
 	}
 }

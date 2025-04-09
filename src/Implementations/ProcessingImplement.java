@@ -4,6 +4,7 @@ import Interfaces.CompFactor;
 import Interfaces.Processing;
 import Interfaces.Response;
 import Interfaces.WebServer;
+import Responses.OutputResponse;
 import Responses.ReadResponse;
 import Responses.ReceiveResponse;
 import Responses.SendResponse;
@@ -12,6 +13,7 @@ import src.DataDestination;
 import src.DataSource;
 import src.InputSource;
 import src.OutputDestination;
+import src.StreamSource;
 
 public class ProcessingImplement implements Processing {
 	WebServer webServer;
@@ -35,6 +37,24 @@ public class ProcessingImplement implements Processing {
 	//Write data to data storage system and user
 	public WriteResponse writeData(OutputDestination outputDestination) {
 		return new WriteResponse(Response.Status.SUCCESS);
+	}
+
+	@Override
+	public OutputResponse getOutputDestination(OutputDestination outputdestination) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public WriteResponse writeData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StreamSource getStream() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

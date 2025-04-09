@@ -6,6 +6,9 @@ import src.StreamSource;
 import Responses.FactorResponse;
 import Responses.InitializationResponse;
 import Responses.WriteOutputResponse;
+
+import java.util.ArrayList;
+
 import Interfaces.CompFactor;
 
 public class PrototypeFactor {
@@ -15,9 +18,6 @@ public class PrototypeFactor {
 		InitializationResponse initializationResponse = factoring.initializeComputation();
 
 		//Read integer stream
-		FactorResponse factorResponse = factoring.readStream(new StreamSource());
-
-		//Write output
-		WriteOutputResponse writeOutputResponse = factoring.writeOutput(new DataStore());
+		FactorResponse factorResponse = factoring.readStream(new StreamSource(new ArrayList<Integer>()));
 	}
 }

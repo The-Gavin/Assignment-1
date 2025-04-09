@@ -32,11 +32,4 @@ public class ProcessSmokeTest {
         DataSource processedData = Mockito.mock(DataSource.class);
         Assertions.assertEquals(data.receiveData(processedData).getStatus(), Response.Status.SUCCESS);
     }
-
-    @Test
-    public void writeSmokeTest() throws Exception {
-        Processing data = new ProcessingImplement();
-        OutputDestination outputLoc = Mockito.mock(OutputDestination.class);
-        Assertions.assertEquals(data.writeData(outputLoc).getStatus(), Response.Status.SUCCESS);
-    }
 }

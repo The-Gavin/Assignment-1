@@ -4,6 +4,7 @@ import Interfaces.CompFactor;
 import Interfaces.Processing;
 import Interfaces.Response;
 import Interfaces.WebServer;
+import Responses.FactorResponse;
 import Responses.InitializationResponse;
 import Responses.InputResponse;
 import Responses.OutputResponse;
@@ -34,6 +35,12 @@ public class WebServerImplement implements WebServer {
 		this.processingComponent = new DataStorage();
 		
 		return new InitializationResponse(Response.Status.SUCCESS);
+	}
+
+	@Override
+	public FactorResponse factor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

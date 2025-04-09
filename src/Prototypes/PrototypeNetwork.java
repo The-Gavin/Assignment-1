@@ -15,6 +15,6 @@ public class PrototypeNetwork {
 		InputResponse inputResponse = server.provideInputSource(new InputSource((File) null));
 
 		//Provide Output Destination
-		OutputResponse outputResponse = server.provideOutputDestination(new OutputDestination((File) null));
+		OutputResponse outputResponse = server.provideOutputDestination(new OutputDestination("File Path"));
 	}
 }

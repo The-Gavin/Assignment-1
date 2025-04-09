@@ -26,6 +26,6 @@ public class PrototypeProcess {
 		ReceiveResponse receiveResponse = readWriter.receiveData(new DataSource(null));
 
 		//Write data to specified locations
-		WriteResponse writeResponse = readWriter.writeData(new OutputDestination((File) null));
+		WriteResponse writeResponse = readWriter.writeData();
 	}
 }

@@ -39,13 +39,14 @@ public class CompEngineComponent implements CompFactor {
 
 	private List<Integer> findFactors(int val){
 		List<Integer> factors = new ArrayList<>();
-		factors.add(1);
-		for(int i = 2; i < val; i++) {
+		for(int i = 1; i < val; i++) {
 			if(val%i == 0) {
 				factors.add(i);
 			}
 		}
-		factors.add(val);
+		if(!factors.contains(val)) {
+			factors.add(val);
+		}
 		return factors;
 	}
 }

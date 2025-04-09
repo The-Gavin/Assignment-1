@@ -1,16 +1,15 @@
 package src;
-import java.io.File;
 
 public class OutputDestination {
 
-    private File file;
+    private String path;
 
-    public OutputDestination(File f) {
-        this.file = f;
+    public OutputDestination(String path) {
+        this.path = path;
     }
 
-
-    public File getFile() {
-        return file;
-    }
+	public String getPath() {
+		// TODO Auto-generated method stub
+		return this.path;
+	}
 }

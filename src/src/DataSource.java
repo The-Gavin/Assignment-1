@@ -4,13 +4,13 @@ import java.util.Map;
 
 public class DataSource {
 
-    private Map<Integer, List<Integer>> data;
+    private List<List<Integer>> data;
 
-    public DataSource(Map<Integer, List<Integer>> data) {
+    public DataSource(List<List<Integer>> data) {
         this.data = data;
     }
 
-    public Map<Integer, List<Integer>> getData() {
+    public List<List<Integer>> getData() {
         // TODO Auto-generated method stub
         return data;
     }

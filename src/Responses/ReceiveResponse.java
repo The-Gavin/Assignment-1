@@ -2,7 +2,7 @@ package Responses;
 
 import Interfaces.Response;
 
-public class ReceiveResponse {
+public class ReceiveResponse implements Response{
     private final Response.Status result;
 
     public ReceiveResponse(Response.Status s) {

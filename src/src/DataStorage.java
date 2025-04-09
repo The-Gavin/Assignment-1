@@ -1,4 +1,5 @@
 package src;
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 
 import Interfaces.Processing;
 import Interfaces.Response;
+import Responses.OutputResponse;
 import Responses.ReadResponse;
 import Responses.ReceiveResponse;
 import Responses.SendResponse;
@@ -16,6 +18,8 @@ import Responses.WriteResponse;
 public class DataStorage implements Processing{
 
 	private Map<Integer, List<Integer>> data = new HashMap<>();
+	private String outputDestination;
+	
 	
 	@Override
 	public ReadResponse readData(InputSource inputSource) {
@@ -63,15 +67,25 @@ public class DataStorage implements Processing{
 		if (source.getData().isEmpty()) {
 			return new ReceiveResponse(Response.Status.FAILURE);
 		}
-		this.data = source.getData();
+		
+		return addData(source);
+	}
+
+	private ReceiveResponse addData(DataSource source) {
+		// TODO Auto-generated method stub
+		for(List<Integer> factors: source.getData()) {
+			data.put(factors.getLast(), factors);
+		}
+		writeData();
 		return new ReceiveResponse(Response.Status.SUCCESS);
 	}
 
 	@Override
-	public WriteResponse writeData(OutputDestination outputDestination) {
-		if (!outputDestination.getFile().exists() || !outputDestination.getFile().canWrite()) {
+	public WriteResponse writeData() {
+		File outputFile = new File(outputDestination);
+		/*if (outputFile.exists() || !outputFile.canWrite()) {
 			return new WriteResponse(Response.Status.FAILURE);
-		}
+		}*/
 		List<String> serializedData = new ArrayList<>();
 		for (Integer num: data.keySet()) {
 			serializedData.add(serialize(num, data.get(num)));
@@ -87,7 +101,7 @@ public class DataStorage implements Processing{
 			return new WriteResponse(Response.Status.FAILURE);
 		}
 		try {
-			FileWriter writer = new FileWriter(outputDestination.getFile());
+			FileWriter writer = new FileWriter(outputFile);
 			writer.write(output.toString());
 			writer.close();
 		} catch (Exception e) {
@@ -104,5 +118,19 @@ public class DataStorage implements Processing{
 			serializedData.append(',');
 		}
 		return serializedData.toString();
+	}
+	
+	public OutputResponse getOutputDestination(OutputDestination output) {
+		this.outputDestination = output.getPath();
+		if(this.outputDestination.isEmpty()) {
+			return new OutputResponse(Response.Status.FAILURE);
+		}
+		return new OutputResponse(Response.Status.SUCCESS);
+	}
+
+	@Override
+	public StreamSource getStream() {
+		// TODO Auto-generated method stub
+		return new StreamSource(new ArrayList<Integer>(data.keySet()));
 	}
 }

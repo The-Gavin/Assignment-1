@@ -3,7 +3,7 @@ package Responses;
 import java.util.List;
 import Interfaces.Response;
 
-public class ReadResponse implements Response {
+public class ReadResponse implements Response<List<Integer>> {
     //TBD
     private final Response.Status result;
     private List<Integer> list = null;
@@ -21,7 +21,9 @@ public class ReadResponse implements Response {
         return result;
     }
 
-    public List<Integer> gerResponse(){
-        return list;
-    }
+	@Override
+	public List<Integer> getData() {
+		// TODO Auto-generated method stub
+		return list;
+	}
 }

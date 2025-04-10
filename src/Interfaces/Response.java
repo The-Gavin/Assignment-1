@@ -1,5 +1,5 @@
 package Interfaces;
-public interface Response {
+public interface Response<T> {
 	
 	public static enum Status {
 		SUCCESS,
@@ -7,4 +7,6 @@ public interface Response {
 	}
 	
 	public Status getStatus();
+	
+	public T getData();
 }

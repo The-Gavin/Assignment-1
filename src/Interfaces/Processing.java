@@ -6,6 +6,7 @@ import src.DataSource;
 import src.InputSource;
 import src.OutputDestination;
 import src.StreamSource;
+import src.StructuredData;
 import Responses.OutputResponse;
 import Responses.ReadResponse;
 
@@ -23,10 +24,10 @@ public interface Processing {
     SendResponse sendDataStream(DataDestination destination);
 
     //Receive processed data from computation component
-    ReceiveResponse receiveData(DataSource source);
+    ReceiveResponse receiveData(DataSource source, String outputPath);
 
     //Write data to data storage system and user
-    WriteResponse writeData();
+    WriteResponse writeData(StructuredData source, String outputPath);
 
 	StreamSource getStream();
     

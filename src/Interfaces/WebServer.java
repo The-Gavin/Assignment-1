@@ -19,6 +19,6 @@ public interface WebServer {
 	//Receive the factors for calculation (provide output destination)
 	OutputResponse provideOutputDestination(OutputDestination outputDestination) throws Exception;
 
-	FactorResponse factor();
+	FactorResponse factor(InputResponse nums, String Path);
 
 }

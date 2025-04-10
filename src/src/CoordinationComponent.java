@@ -9,13 +9,14 @@ import Responses.FactorResponse;
 import Responses.InitializationResponse;
 import Responses.InputResponse;
 import Responses.OutputResponse;
+import Responses.ReadResponse;
 
 public class CoordinationComponent implements WebServer {
 	
 	CompFactor computationComponent;
     Processing processingComponent;
     
-    boolean initialize = false;
+    boolean initialize = false; 
     
     public static Optional<CoordinationComponent> initialize() {
     	CoordinationComponent newComponent = new CoordinationComponent();
@@ -43,7 +44,12 @@ public class CoordinationComponent implements WebServer {
 		if (!initialize) {
 			throw new Exception("Component Not Initialized");
 		}
-			return new InputResponse(processingComponent.readData(inputSource).getStatus());
+		ReadResponse returned =	processingComponent.readData(inputSource);
+		if(returned.getStatus().equals(Response.Status.FAILURE)) {
+			System.out.println("InputSource produced error");
+			return new InputResponse();
+		}
+		return new InputResponse(returned);
 	}
 	
 	public FactorResponse provideData(StreamSource values) {
@@ -54,16 +60,18 @@ public class CoordinationComponent implements WebServer {
 	public OutputResponse provideOutputDestination(OutputDestination outputDestination) throws Exception{
 		if (!initialize) {
 			throw new Exception("Component Not Initialized");
-		}
-			return new OutputResponse(processingComponent.getOutputDestination(outputDestination).getStatus());
+		}	
+		return new OutputResponse(processingComponent.getOutputDestination(outputDestination).getStatus());
+			
 	}
 	
-	public FactorResponse factor() {
-		FactorResponse factoringResponse = computationComponent.readStream(processingComponent.getStream());
+	public FactorResponse factor(InputResponse nums, String outputPath) {
+		FactorResponse factoringResponse = computationComponent.readStream(new StreamSource(nums.getData()));
 		if(factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
 			return factoringResponse;
 		}
-		if( processingComponent.receiveData(new DataSource(factoringResponse.getFactors())).getStatus().equals(factoringResponse.getStatus())) {
+		DataSource facotoredData = new DataSource(factoringResponse.getFactors()); 
+		if( processingComponent.receiveData(facotoredData, outputPath).getStatus().equals(factoringResponse.getStatus())) {
 			return factoringResponse;
 		}
 		return new FactorResponse(Response.Status.FAILURE);

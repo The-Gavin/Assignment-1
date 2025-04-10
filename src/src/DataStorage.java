@@ -16,10 +16,6 @@ import Responses.SendResponse;
 import Responses.WriteResponse;
 
 public class DataStorage implements Processing{
-
-	private Map<Integer, List<Integer>> data = new HashMap<>();
-	private String outputDestination;
-	
 	
 	@Override
 	public ReadResponse readData(InputSource inputSource) {
@@ -27,9 +23,6 @@ public class DataStorage implements Processing{
 		ReadResponse parsedData = parseData(inputSource);
 		if(parsedData.getStatus().equals(Response.Status.FAILURE)) {
 			return parsedData;
-		}
-		for(Integer n: parsedData.gerResponse()) {
-			data.put(n, new ArrayList<Integer>());
 		}
 		return parsedData;
 	}
@@ -62,38 +55,28 @@ public class DataStorage implements Processing{
 	}
 
 	@Override
-	public ReceiveResponse receiveData(DataSource source) {
+	public ReceiveResponse receiveData(DataSource source, String outputPath) {
 		// TODO Auto-generated method stub
 		if (source.getData().isEmpty()) {
 			return new ReceiveResponse(Response.Status.FAILURE);
 		}
+		StructuredData data = new StructuredData(source);
 		
-		return addData(source);
-	}
-
-	private ReceiveResponse addData(DataSource source) {
-		// TODO Auto-generated method stub
-		for(List<Integer> factors: source.getData()) {
-			data.put(factors.getLast(), factors);
-		}
-		writeData();
+		writeData(data, outputPath);
 		return new ReceiveResponse(Response.Status.SUCCESS);
 	}
 
 	@Override
-	public WriteResponse writeData() {
-		File outputFile = new File(outputDestination);
-		/*if (outputFile.exists() || !outputFile.canWrite()) {
-			return new WriteResponse(Response.Status.FAILURE);
-		}*/
+	public WriteResponse writeData(StructuredData source, String outputPath) {
+		File outputFile = new File(outputPath);
 		List<String> serializedData = new ArrayList<>();
-		for (Integer num: data.keySet()) {
-			serializedData.add(serialize(num, data.get(num)));
+		for (Integer num: source.getData().keySet()) {
+			serializedData.add(serialize(num, source.getData().get(num)));
 		}
 		StringBuilder output = new StringBuilder();
 		for (String s: serializedData) {
 			output.append(s);
-			output.append(';');
+			output.append("; ");
 		}
 		try {
 			output.deleteCharAt(output.length()-1);
@@ -108,6 +91,7 @@ public class DataStorage implements Processing{
 			return new WriteResponse(Response.Status.FAILURE);
 		}
 		return new WriteResponse(Response.Status.SUCCESS);
+		
 	}
 
 	private String serialize(int num, List<Integer> factors) {
@@ -117,20 +101,17 @@ public class DataStorage implements Processing{
 			serializedData.append(Integer.toString(i));
 			serializedData.append(',');
 		}
+		serializedData.deleteCharAt(serializedData.length()-1);
 		return serializedData.toString();
 	}
 	
 	public OutputResponse getOutputDestination(OutputDestination output) {
-		this.outputDestination = output.getPath();
-		if(this.outputDestination.isEmpty()) {
-			return new OutputResponse(Response.Status.FAILURE);
-		}
 		return new OutputResponse(Response.Status.SUCCESS);
 	}
 
 	@Override
 	public StreamSource getStream() {
 		// TODO Auto-generated method stub
-		return new StreamSource(new ArrayList<Integer>(data.keySet()));
+		return new StreamSource(new ArrayList<Integer>());
 	}
 }

@@ -1,6 +1,7 @@
 import java.io.File;
 
 import Interfaces.WebServer;
+import Responses.InputResponse;
 import src.InputSource;
 import src.OutputDestination;
 
@@ -22,10 +23,8 @@ public class TestUser {
 		// TODO 4: Call the appropriate method(s) on the coordinator to get it to 
 		// run the compute job specified by inputPath, outputPath, and delimiter
 		try {
-			coordinator.provideInputSource(new InputSource(new File(inputPath)));
-			coordinator.provideOutputDestination(new OutputDestination(outputPath));
-			coordinator.factor();
-			
+			InputResponse nums = coordinator.provideInputSource(new InputSource(new File(inputPath)));
+			coordinator.factor(nums, outputPath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.print(e);

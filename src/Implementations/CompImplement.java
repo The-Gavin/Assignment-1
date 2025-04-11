@@ -16,7 +16,7 @@ public class CompImplement implements CompFactor {
 
 	//Initialize computation
 	public InitializationResponse initializeComputation() {
-		return new InitializationResponse(Response.Status.SUCCESS);
+		return new InitializationResponse(Response.Status.SUCCESS, "");
 	}
 
 	//Read integer stream
@@ -26,6 +26,6 @@ public class CompImplement implements CompFactor {
 
 	//Write output (integer followed by its factors) to data store
 	public WriteOutputResponse writeOutput(DataStore dataStore) {
-		return new WriteOutputResponse(Response.Status.SUCCESS);
+		return new WriteOutputResponse(Response.Status.SUCCESS, "");
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import Interfaces.Response;
 
-public class FactorResponse implements Response{
+public class FactorResponse implements Response<List<List<Integer>>>{
 
 	private Response.Status status;
 	private List<List<Integer>> factorLists;
@@ -30,7 +30,7 @@ public class FactorResponse implements Response{
 		return this;
 	}
 
-	public List<List<Integer>> getFactors() {
+	public List<List<Integer>> getData() {
 		// TODO Auto-generated method stub
 		return factorLists;
 	}

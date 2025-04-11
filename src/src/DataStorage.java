@@ -1,6 +1,7 @@
 package src;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,12 +59,15 @@ public class DataStorage implements Processing{
 	public ReceiveResponse receiveData(DataSource source, String outputPath) {
 		// TODO Auto-generated method stub
 		if (source.getData().isEmpty()) {
-			return new ReceiveResponse(Response.Status.FAILURE);
+			return new ReceiveResponse(Response.Status.FAILURE, "DataSource contained no data");
 		}
 		StructuredData data = new StructuredData(source);
 		
-		writeData(data, outputPath);
-		return new ReceiveResponse(Response.Status.SUCCESS);
+		WriteResponse written = writeData(data, outputPath);
+		if(written.getStatus().equals(Response.Status.SUCCESS)) {
+			return new ReceiveResponse(Response.Status.SUCCESS, "Data has been Written to file");
+		}
+		else return new ReceiveResponse(Response.Status.FAILURE, "Data Failed to be Written");
 	}
 
 	@Override
@@ -78,19 +82,17 @@ public class DataStorage implements Processing{
 			output.append(s);
 			output.append("; ");
 		}
-		try {
-			output.deleteCharAt(output.length()-1);
-		}catch (Exception e) {
-			return new WriteResponse(Response.Status.FAILURE);
-		}
+	
+		output.deleteCharAt(output.length()-1);
+		
 		try {
 			FileWriter writer = new FileWriter(outputFile);
 			writer.write(output.toString());
 			writer.close();
-		} catch (Exception e) {
-			return new WriteResponse(Response.Status.FAILURE);
+		} catch (IOException e) {
+			return new WriteResponse(Response.Status.FAILURE,e.toString());
 		}
-		return new WriteResponse(Response.Status.SUCCESS);
+		return new WriteResponse(Response.Status.SUCCESS, "Factors written to file");
 		
 	}
 
@@ -106,7 +108,7 @@ public class DataStorage implements Processing{
 	}
 	
 	public OutputResponse getOutputDestination(OutputDestination output) {
-		return new OutputResponse(Response.Status.SUCCESS);
+		return new OutputResponse(Response.Status.SUCCESS, "Received output");
 	}
 
 	@Override

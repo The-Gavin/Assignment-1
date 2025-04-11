@@ -11,6 +11,6 @@ public class DataStore {
 
 	public WriteOutputResponse recieveData(OutputData outputData) {
 		// TODO Auto-generated method stub
-		return new WriteOutputResponse(Response.Status.SUCCESS);
+		return new WriteOutputResponse(Response.Status.SUCCESS, "");
 	}
 }

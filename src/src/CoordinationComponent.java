@@ -61,8 +61,11 @@ public class CoordinationComponent implements WebServer {
 		if (!initialize) {
 			throw new Exception("Component Not Initialized");
 		}	
-		return new OutputResponse(processingComponent.getOutputDestination(outputDestination).getStatus());
-			
+		OutputResponse outputSent = processingComponent.getOutputDestination(outputDestination);
+		if(outputSent.getStatus().equals(Response.Status.SUCCESS)) {
+			return new OutputResponse(outputSent.getStatus(), "Output sent");
+		}
+		return new OutputResponse(Response.Status.FAILURE, "Output not recievd by processing component");
 	}
 	
 	public FactorResponse factor(InputResponse nums, String outputPath) {
@@ -70,7 +73,7 @@ public class CoordinationComponent implements WebServer {
 		if(factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
 			return factoringResponse;
 		}
-		DataSource facotoredData = new DataSource(factoringResponse.getFactors()); 
+		DataSource facotoredData = new DataSource(factoringResponse.getData()); 
 		if( processingComponent.receiveData(facotoredData, outputPath).getStatus().equals(factoringResponse.getStatus())) {
 			return factoringResponse;
 		}

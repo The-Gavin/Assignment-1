@@ -37,14 +37,14 @@ public class NetworkTest {
 		
 		WebServer server = new WebServerImplement();
 		
-		InputResponse input = new InputResponse(Response.Status.FAILURE);
+		InputResponse input = new InputResponse(Response.Status.FAILURE, new ArrayList<>());
 		try {
 			input = server.provideInputSource(inputSource);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		
-		OutputResponse output = new OutputResponse(Response.Status.FAILURE);
+		OutputResponse output = new OutputResponse(Response.Status.FAILURE, "Failure");
 		try {
 			output = server.provideOutputDestination(outputDestination);
 		} catch (Exception e) {

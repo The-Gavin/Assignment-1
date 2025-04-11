@@ -23,9 +23,9 @@ public class PrototypeProcess {
 		SendResponse sendResponse = readWriter.sendDataStream(new DataDestination());
 
 		//Receive processed data from computation component
-		ReceiveResponse receiveResponse = readWriter.receiveData(new DataSource(null));
+		ReceiveResponse receiveResponse = readWriter.receiveData(new DataSource(null), null);
 
 		//Write data to specified locations
-		WriteResponse writeResponse = readWriter.writeData();
+		WriteResponse writeResponse = readWriter.writeData(null, null);
 	}
 }

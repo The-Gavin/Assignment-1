@@ -102,13 +102,13 @@ public class MultiThreadWebServer implements WebServer {
 		Queue<List<Integer>> singleLists = new LinkedList<>();
 		FactorResponse toReturn = new FactorResponse(Response.Status.SUCCESS);
 		
-		for(Integer fact: factors.getData()) {
+		for (Integer fact: factors.getData()) {
 			List<Integer> holdValue = new ArrayList<>();
 			holdValue.add(fact);
 			singleLists.add(holdValue);
 		}
 		
-		for(int i = 0; i < threadCount; i++) {
+		for (int i = 0; i < threadCount; i++) {
 			results.add(threadPool.submit(() -> 
 				computationComponent.readStream(
 						new StreamSource(singleLists.poll())

@@ -28,7 +28,7 @@ public class WebServerImplement implements WebServer {
 
     //Receive the factors for calculation (provide output destination)
     public OutputResponse provideOutputDestination(OutputDestination outputDestination) {
-        return new OutputResponse(Response.Status.SUCCESS,"");
+        return new OutputResponse(Response.Status.SUCCESS, ""); 
     }
 
 	@Override
@@ -37,11 +37,11 @@ public class WebServerImplement implements WebServer {
 		this.computationComponent = new CompEngineComponent();
 		this.processingComponent = new DataStorage();
 		
-		return new InitializationResponse(Response.Status.SUCCESS,"");
+		return new InitializationResponse(Response.Status.SUCCESS, "");
 	}
 
 	@Override
-	public FactorResponse factor(InputResponse nums, String Path) {
+	public FactorResponse factor(InputResponse nums, String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}

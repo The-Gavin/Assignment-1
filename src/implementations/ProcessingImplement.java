@@ -27,17 +27,17 @@ public class ProcessingImplement implements Processing {
 
 	//Pass data in form of integer stream to computation component
 	public SendResponse sendDataStream(DataDestination destination) {
-		return new SendResponse(Response.Status.SUCCESS,"");
+		return new SendResponse(Response.Status.SUCCESS, "");
 	}
 
 	//Receive processed data from computation component
 	public ReceiveResponse receiveData(DataSource source, String outputPath) {
-		return new ReceiveResponse(Response.Status.SUCCESS,"");
+		return new ReceiveResponse(Response.Status.SUCCESS, "");
 	}
 
 	//Write data to data storage system and user
 	public WriteResponse writeData(OutputDestination outputDestination) {
-		return new WriteResponse(Response.Status.SUCCESS,"");
+		return new WriteResponse(Response.Status.SUCCESS, "");
 	}
 
 	@Override

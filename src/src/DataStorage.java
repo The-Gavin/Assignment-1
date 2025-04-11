@@ -66,7 +66,9 @@ public class DataStorage implements Processing{
 		WriteResponse written = writeData(data, outputPath);
 		if (written.getStatus().equals(Response.Status.SUCCESS)) {
 			return new ReceiveResponse(Response.Status.SUCCESS, "Data has been Written to file");
-		}else return new ReceiveResponse(Response.Status.FAILURE, "Data Failed to be Written");
+		}else {
+			return new ReceiveResponse(Response.Status.FAILURE, "Data Failed to be Written");
+		}
 	}
 
 	@Override
@@ -89,7 +91,7 @@ public class DataStorage implements Processing{
 			writer.write(output.toString());
 			writer.close();
 		} catch (IOException e) {
-			return new WriteResponse(Response.Status.FAILURE,e.toString());
+			return new WriteResponse(Response.Status.FAILURE, e.toString());
 		}
 		return new WriteResponse(Response.Status.SUCCESS, "Factors written to file");
 		

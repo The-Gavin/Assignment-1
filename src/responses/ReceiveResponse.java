@@ -1,6 +1,6 @@
-package Responses;
+package responses;
 
-import Interfaces.Response;
+import interfaces.Response;
 
 public class ReceiveResponse implements Response<String>{
     private final Response.Status result;

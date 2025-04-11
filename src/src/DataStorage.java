@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import Interfaces.Processing;
-import Interfaces.Response;
-import Responses.OutputResponse;
-import Responses.ReadResponse;
-import Responses.ReceiveResponse;
-import Responses.SendResponse;
-import Responses.WriteResponse;
+import interfaces.Processing;
+import interfaces.Response;
+import responses.OutputResponse;
+import responses.ReadResponse;
+import responses.ReceiveResponse;
+import responses.SendResponse;
+import responses.WriteResponse;
 
 public class DataStorage implements Processing{
 	
@@ -22,7 +22,7 @@ public class DataStorage implements Processing{
 	public ReadResponse readData(InputSource inputSource) {
 		// TODO Auto-generated method stub
 		ReadResponse parsedData = parseData(inputSource);
-		if(parsedData.getStatus().equals(Response.Status.FAILURE)) {
+		if (parsedData.getStatus().equals(Response.Status.FAILURE)) {
 			return parsedData;
 		}
 		return parsedData;
@@ -64,10 +64,9 @@ public class DataStorage implements Processing{
 		StructuredData data = new StructuredData(source);
 		
 		WriteResponse written = writeData(data, outputPath);
-		if(written.getStatus().equals(Response.Status.SUCCESS)) {
+		if (written.getStatus().equals(Response.Status.SUCCESS)) {
 			return new ReceiveResponse(Response.Status.SUCCESS, "Data has been Written to file");
-		}
-		else return new ReceiveResponse(Response.Status.FAILURE, "Data Failed to be Written");
+		}else return new ReceiveResponse(Response.Status.FAILURE, "Data Failed to be Written");
 	}
 
 	@Override

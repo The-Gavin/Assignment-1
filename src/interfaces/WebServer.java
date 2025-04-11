@@ -1,12 +1,12 @@
-package Interfaces;
+package interfaces;
 
 import project.annotations.NetworkAPI;
+import responses.FactorResponse;
+import responses.InitializationResponse;
+import responses.InputResponse;
+import responses.OutputResponse;
 import src.InputSource;
 import src.OutputDestination;
-import Responses.FactorResponse;
-import Responses.InitializationResponse;
-import Responses.OutputResponse;
-import Responses.InputResponse;
 
 @NetworkAPI
 public interface WebServer {
@@ -19,6 +19,6 @@ public interface WebServer {
 	//Receive the factors for calculation (provide output destination)
 	OutputResponse provideOutputDestination(OutputDestination outputDestination) throws Exception;
 
-	FactorResponse factor(InputResponse nums, String Path);
+	FactorResponse factor(InputResponse nums, String path);
 
 }

@@ -1,9 +1,9 @@
-package Responses;
+package responses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Interfaces.Response;
+import interfaces.Response;
 
 public class FactorResponse implements Response<List<List<Integer>>>{
 
@@ -21,9 +21,9 @@ public class FactorResponse implements Response<List<List<Integer>>>{
 		return status;
 	}
 
-	public FactorResponse ReciveFactors(List<Integer> factors) {
+	public FactorResponse reciveFactors(List<Integer> factors) {
 		// TODO Auto-generated method stub
-		if(this.factorLists.add(factors)) {
+		if (this.factorLists.add(factors)) {
 			return this;
 		}
 		this.status = Response.Status.FAILURE;

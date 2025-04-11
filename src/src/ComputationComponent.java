@@ -1,7 +1,7 @@
 package src;
 
-import Interfaces.Response;
-import Responses.InitializationResponse;
+import interfaces.Response;
+import responses.InitializationResponse;
 
 public class ComputationComponent {
 	

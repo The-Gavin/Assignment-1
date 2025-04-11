@@ -1,7 +1,8 @@
-package Responses;
+package responses;
 
 import java.util.List;
-import Interfaces.Response;
+
+import interfaces.Response;
 
 public class ReadResponse implements Response<List<Integer>> {
     //TBD

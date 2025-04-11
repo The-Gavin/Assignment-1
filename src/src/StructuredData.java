@@ -10,8 +10,8 @@ public class StructuredData {
 	
 	public StructuredData(DataSource source) {
 		this.data = new HashMap<>();
-		for(List<Integer> list: source.getData()) {
-			data.put(list.getLast(), list);
+		for (List<Integer> list: source.getData()) {
+			data.put(list.get(list.size()-1), list);
 		}
 	}
 	

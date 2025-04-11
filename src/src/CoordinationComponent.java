@@ -1,15 +1,15 @@
 package src;
 import java.util.Optional;
 
-import Interfaces.CompFactor;
-import Interfaces.Processing;
-import Interfaces.Response;
-import Interfaces.WebServer;
-import Responses.FactorResponse;
-import Responses.InitializationResponse;
-import Responses.InputResponse;
-import Responses.OutputResponse;
-import Responses.ReadResponse;
+import interfaces.CompFactor;
+import interfaces.Processing;
+import interfaces.Response;
+import interfaces.WebServer;
+import responses.FactorResponse;
+import responses.InitializationResponse;
+import responses.InputResponse;
+import responses.OutputResponse;
+import responses.ReadResponse;
 
 public class CoordinationComponent implements WebServer {
 	
@@ -21,7 +21,7 @@ public class CoordinationComponent implements WebServer {
     //Builder method for making sure the components get initialized properly
     public static Optional<CoordinationComponent> initialize() {
     	CoordinationComponent newComponent = new CoordinationComponent();
-    	if(newComponent.coordinationInitializer().getStatus().equals(Response.Status.SUCCESS)) {
+    	if (newComponent.coordinationInitializer().getStatus().equals(Response.Status.SUCCESS)) {
     		return Optional.of(newComponent);
     	}
     	return Optional.empty();
@@ -50,7 +50,7 @@ public class CoordinationComponent implements WebServer {
 			throw new Exception("Component Not Initialized");
 		}
 		ReadResponse returned =	processingComponent.readData(inputSource);
-		if(returned.getStatus().equals(Response.Status.FAILURE)) {
+		if (returned.getStatus().equals(Response.Status.FAILURE)) {
 			System.out.println("InputSource produced error");
 			throw new Exception("Input data cannot be read");
 		}
@@ -64,7 +64,7 @@ public class CoordinationComponent implements WebServer {
 			throw new Exception("Component Not Initialized");
 		}	
 		OutputResponse outputSent = processingComponent.getOutputDestination(outputDestination);
-		if(outputSent.getStatus().equals(Response.Status.SUCCESS)) {
+		if (outputSent.getStatus().equals(Response.Status.SUCCESS)) {
 			return new OutputResponse(outputSent.getStatus(), "Output sent");
 		}
 		return new OutputResponse(Response.Status.FAILURE, "Output not recievd by processing component");
@@ -77,11 +77,11 @@ public class CoordinationComponent implements WebServer {
 	public FactorResponse factor(InputResponse nums, String outputPath) {
 		StreamSource factorables = new StreamSource(nums.getData());
 		FactorResponse factoringResponse = computationComponent.readStream(factorables);
-		if(factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
+		if (factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
 			return factoringResponse;
 		}
 		DataSource facotoredData = new DataSource(factoringResponse.getData()); 
-		if( processingComponent.receiveData(facotoredData, outputPath).getStatus().equals(factoringResponse.getStatus())) {
+		if ( processingComponent.receiveData(facotoredData, outputPath).getStatus().equals(factoringResponse.getStatus())) {
 			return factoringResponse;
 		}
 		return new FactorResponse(Response.Status.FAILURE);

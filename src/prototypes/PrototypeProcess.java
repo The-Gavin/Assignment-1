@@ -1,13 +1,13 @@
-package Prototypes;
+package prototypes;
 
 import java.io.File;
 
-import Interfaces.Processing;
+import interfaces.Processing;
 import project.annotations.ProcessAPIPrototype;
-import Responses.ReadResponse;
-import Responses.ReceiveResponse;
-import Responses.SendResponse;
-import Responses.WriteResponse;
+import responses.ReadResponse;
+import responses.ReceiveResponse;
+import responses.SendResponse;
+import responses.WriteResponse;
 import src.InputSource;
 import src.DataDestination;
 import src.DataSource;

@@ -1,14 +1,14 @@
-package Implementations;
+package implementations;
 
-import Interfaces.CompFactor;
-import Interfaces.Processing;
-import Interfaces.Response;
-import Interfaces.WebServer;
-import Responses.OutputResponse;
-import Responses.ReadResponse;
-import Responses.ReceiveResponse;
-import Responses.SendResponse;
-import Responses.WriteResponse;
+import interfaces.CompFactor;
+import interfaces.Processing;
+import interfaces.Response;
+import interfaces.WebServer;
+import responses.OutputResponse;
+import responses.ReadResponse;
+import responses.ReceiveResponse;
+import responses.SendResponse;
+import responses.WriteResponse;
 import src.DataDestination;
 import src.DataSource;
 import src.InputSource;

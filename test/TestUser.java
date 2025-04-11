@@ -1,7 +1,7 @@
 import java.io.File;
 
-import Interfaces.WebServer;
-import Responses.InputResponse;
+import interfaces.WebServer;
+import responses.InputResponse;
 import src.InputSource;
 import src.OutputDestination;
 

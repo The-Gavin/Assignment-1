@@ -1,16 +1,16 @@
-package Implementations;
+package implementations;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Interfaces.CompFactor;
-import Interfaces.Processing;
-import Interfaces.Response;
-import Interfaces.WebServer;
-import Responses.FactorResponse;
-import Responses.InitializationResponse;
-import Responses.InputResponse;
-import Responses.OutputResponse;
+import interfaces.CompFactor;
+import interfaces.Processing;
+import interfaces.Response;
+import interfaces.WebServer;
+import responses.FactorResponse;
+import responses.InitializationResponse;
+import responses.InputResponse;
+import responses.OutputResponse;
 import src.CompEngineComponent;
 import src.DataStorage;
 import src.InputSource;

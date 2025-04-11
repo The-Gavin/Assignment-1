@@ -1,9 +1,9 @@
-package Responses;
+package responses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Interfaces.Response;
+import interfaces.Response;
 
 public class InputResponse implements Response<List<Integer>>{
 	

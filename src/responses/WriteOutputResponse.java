@@ -1,14 +1,14 @@
-package Responses;
+package responses;
 
-import Interfaces.Response;
+import interfaces.Response;
 
-public class ReadStreamResponse implements Response<String>{
+public class WriteOutputResponse implements Response<String> {
     private final Response.Status result;
     private String data;
-    
-    public ReadStreamResponse(Response.Status s, String str) {
+
+    public WriteOutputResponse(Response.Status s, String data) {
         this.result = s;
-        this.data = str;
+        this.data = data;
     }
 
     public Response.Status getStatus() {

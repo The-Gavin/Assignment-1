@@ -1,10 +1,10 @@
-package Prototypes;
+package prototypes;
 import java.io.File;
 
-import Interfaces.WebServer;
-import Responses.InputResponse;
-import Responses.OutputResponse;
+import interfaces.WebServer;
 import project.annotations.NetworkAPIPrototype;
+import responses.InputResponse;
+import responses.OutputResponse;
 import src.InputSource;
 import src.OutputDestination;
 

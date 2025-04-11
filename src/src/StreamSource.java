@@ -1,8 +1,8 @@
 package src;
 import java.util.List;
 
-import Interfaces.Response;
-import Responses.ReadStreamResponse;
+import interfaces.Response;
+import responses.ReadStreamResponse;
 
 public class StreamSource {
 	
@@ -14,7 +14,7 @@ public class StreamSource {
 	
 	public ReadStreamResponse containsData() {
 		// TODO Auto-generated method stub
-		if(values.isEmpty()) {
+		if (values.isEmpty()) {
 			return new ReadStreamResponse(Response.Status.FAILURE, "List was Empty");
 		}
 		return new ReadStreamResponse(Response.Status.SUCCESS, "List has Values");

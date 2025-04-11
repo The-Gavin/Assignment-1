@@ -1,15 +1,15 @@
-package Prototypes;
+package prototypes;
 
 import project.annotations.ConceptualAPIPrototype;
+import responses.FactorResponse;
+import responses.InitializationResponse;
+import responses.WriteOutputResponse;
 import src.DataStore;
 import src.StreamSource;
-import Responses.FactorResponse;
-import Responses.InitializationResponse;
-import Responses.WriteOutputResponse;
 
 import java.util.ArrayList;
 
-import Interfaces.CompFactor;
+import interfaces.CompFactor;
 
 public class PrototypeFactor {
 	@ConceptualAPIPrototype

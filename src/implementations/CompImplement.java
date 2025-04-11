@@ -1,12 +1,12 @@
-package Implementations;
+package implementations;
 
-import Interfaces.CompFactor;
-import Interfaces.Processing;
-import Interfaces.WebServer;
-import Interfaces.Response;
-import Responses.FactorResponse;
-import Responses.InitializationResponse;
-import Responses.WriteOutputResponse;
+import interfaces.CompFactor;
+import interfaces.Processing;
+import interfaces.Response;
+import interfaces.WebServer;
+import responses.FactorResponse;
+import responses.InitializationResponse;
+import responses.WriteOutputResponse;
 import src.DataStore;
 import src.StreamSource;
 

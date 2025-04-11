@@ -1,8 +1,8 @@
-package Interfaces;
-import Responses.FactorResponse;
-import Responses.InitializationResponse;
-import Responses.WriteOutputResponse;
+package interfaces;
 import project.annotations.ConceptualAPI;
+import responses.FactorResponse;
+import responses.InitializationResponse;
+import responses.WriteOutputResponse;
 import src.StreamSource;
 import src.DataStore;
 

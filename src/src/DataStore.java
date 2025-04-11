@@ -1,8 +1,8 @@
 package src;
 
-import Interfaces.Response;
-import Responses.ReadResponse;
-import Responses.WriteOutputResponse;
+import interfaces.Response;
+import responses.ReadResponse;
+import responses.WriteOutputResponse;
 
 public class DataStore {
 	public ReadResponse read(InputConfig i) {

@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Interfaces.WebServer;
+import interfaces.WebServer;
 import src.CoordinationComponent;
 import src.MultiThreadWebServer;
 

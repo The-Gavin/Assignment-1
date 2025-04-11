@@ -23,7 +23,7 @@ public class CompEngineComponent implements CompFactor {
 
 	@Override
 	public FactorResponse readStream(StreamSource streamSource) {
-		List<Integer> values = streamSource.values;
+		List<Integer> values = streamSource.getData();
 		FactorResponse messenger = new FactorResponse(Response.Status.SUCCESS);
 		if(values.isEmpty()) {
 			return new FactorResponse(Response.Status.FAILURE);

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import Interfaces.WebServer;
 import src.CoordinationComponent;
+import src.MultiThreadWebServer;
 
 public class TestMultiUser {
 	
@@ -26,7 +27,7 @@ public class TestMultiUser {
 		//TODO 2: create an instance of the implementation of your @NetworkAPI; this is the component
 		// that the user will make requests to
 		// Store it in the 'coordinator' instance variable
-		Optional<CoordinationComponent> initalizer = CoordinationComponent.initialize();
+		Optional<WebServer> initalizer = MultiThreadWebServer.initialize();
 		if(initalizer.isPresent()) {
 			coordinator = initalizer.get();
 		}

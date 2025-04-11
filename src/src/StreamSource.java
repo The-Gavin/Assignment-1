@@ -6,7 +6,7 @@ import Responses.ReadStreamResponse;
 
 public class StreamSource {
 	
-	List<Integer> values;
+	private List<Integer> values;
 	
 	public StreamSource(List<Integer> values) {
 		this.values = values;
@@ -19,5 +19,8 @@ public class StreamSource {
 		}
 		return new ReadStreamResponse(Response.Status.SUCCESS, "List has Values");
 	}
-    //TBD
+    
+	public List<Integer> getData() {
+		return values;
+	}
 }

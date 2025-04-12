@@ -8,10 +8,18 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import implementations.WebServerImplement;
+import interfaces.CompFactor;
+import interfaces.Response;
+import interfaces.WebServer;
+import responses.InputResponse;
+import responses.OutputResponse;
+import responses.ReadResponse;
+import src.DataStore;
+import src.InputConfig;
+import src.InputSource;
+import src.OutputDestination;
 
 //Import classes from the rest of the project
 
@@ -29,14 +37,14 @@ public class NetworkTest {
 		
 		WebServer server = new WebServerImplement();
 		
-		InputResponse input = new InputResponse(Response.Status.FAILURE);
+		InputResponse input = new InputResponse(Response.Status.FAILURE, new ArrayList<>());
 		try {
 			input = server.provideInputSource(inputSource);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		
-		OutputResponse output = new OutputResponse(Response.Status.FAILURE);
+		OutputResponse output = new OutputResponse(Response.Status.FAILURE, "Failure");
 		try {
 			output = server.provideOutputDestination(outputDestination);
 		} catch (Exception e) {

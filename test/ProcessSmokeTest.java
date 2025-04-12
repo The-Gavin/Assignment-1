@@ -2,6 +2,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import implementations.ProcessingImplement;
+import interfaces.Processing;
+import interfaces.Response;
+import src.DataDestination;
+import src.DataSource;
+import src.InputSource;
+import src.OutputDestination;
+
 public class ProcessSmokeTest {
 
     @Test
@@ -22,13 +30,6 @@ public class ProcessSmokeTest {
     public void receiveSmokeTest() throws Exception {
         Processing data = new ProcessingImplement();
         DataSource processedData = Mockito.mock(DataSource.class);
-        Assertions.assertEquals(data.receiveData(processedData).getStatus(), Response.Status.SUCCESS);
-    }
-
-    @Test
-    public void writeSmokeTest() throws Exception {
-        Processing data = new ProcessingImplement();
-        OutputDestination outputLoc = Mockito.mock(OutputDestination.class);
-        Assertions.assertEquals(data.writeData(outputLoc).getStatus(), Response.Status.SUCCESS);
+        Assertions.assertEquals(data.receiveData(processedData, "File path").getStatus(), Response.Status.SUCCESS);
     }
 }

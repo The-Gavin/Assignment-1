@@ -61,7 +61,6 @@ public class MultiThreadWebServer implements WebServer {
 		}
 		ReadResponse returned =	processingComponent.readData(inputSource);
 		if (returned.getStatus().equals(Response.Status.FAILURE)) {
-			System.out.println("InputSource produced error");
 			throw new Exception("Input data cannot be read");
 		}
 		return new InputResponse(returned);
@@ -95,7 +94,7 @@ public class MultiThreadWebServer implements WebServer {
 		return new FactorResponse(Response.Status.FAILURE);
 	}
 	
-	public FactorResponse multiThreadFactoring(StreamSource factors) {
+	public FactorResponse multiThreadFactoring(StreamSource factors) throws RuntimeException{
 		int threadCount = Math.min(NUMBER_OF_THREADS, factors.getData().size());
 		ExecutorService threadPool = Executors.newFixedThreadPool(threadCount);
 		List<Future<FactorResponse>> results = new ArrayList<>();
@@ -109,17 +108,14 @@ public class MultiThreadWebServer implements WebServer {
 		}
 		
 		for (int i = 0; i < threadCount; i++) {
+			StreamSource number = new StreamSource(singleLists.poll());
 			results.add(threadPool.submit(() -> 
-				computationComponent.readStream(
-						new StreamSource(singleLists.poll())
-				)
-			));
+				computationComponent.readStream(number)));
 		}
 		
 		results.forEach(future -> {
 			try {
 				FactorResponse listOfFactors = future.get();
-				System.out.println(listOfFactors.getData().toString());
 				toReturn.reciveFactors(listOfFactors.getData().get(0));
 			}catch (Exception e) {
 				throw new RuntimeException(e);

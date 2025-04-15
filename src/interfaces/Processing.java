@@ -23,12 +23,10 @@ public interface Processing {
     SendResponse sendDataStream(DataDestination destination);
 
     //Receive processed data from computation component
-    ReceiveResponse receiveData(DataSource source, String outputPath);
+    ReceiveResponse receiveData(DataSource source);
 
     //Write data to data storage system and user
-    WriteResponse writeData(StructuredData source, String outputPath);
+    WriteResponse writeData(StructuredData source);
 
 	StreamSource getStream();
-    
-    
 }

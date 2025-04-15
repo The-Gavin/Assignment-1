@@ -8,7 +8,6 @@ public class OutputDestination {
         this.file = f;
     }
 
-
     public File getFile() {
         return file;
     }

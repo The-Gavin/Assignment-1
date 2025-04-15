@@ -80,7 +80,7 @@ public class CoordinationComponent implements WebServer {
 		if (factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
 			return factoringResponse;
 		}
-		DataSource facotoredData = new DataSource(factoringResponse.getData(),outputPath); 
+		DataSource facotoredData = new DataSource(factoringResponse.getData(), outputPath); 
 		if ( processingComponent.receiveData(facotoredData).getStatus().equals(factoringResponse.getStatus())) {
 			return factoringResponse;
 		}

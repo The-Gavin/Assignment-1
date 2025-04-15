@@ -1,0 +1,80 @@
+syntax = "proto2";
+package protos;
+
+service Processing {
+ rpc readData (InputSource) returns (ReadResponse) {}
+ rpc getOutputDestination (OutputDestination) returns (OutputResponse) {}
+ rpc sendDataStream (DataDestination) returns (SendResponse) {}
+ rpc receiveData (DataSource) returns (ReceiveResponse) {}
+ rpc writeData (StructuredData) returns (WriteResponse) {}
+ rpc getStream (Empty) returns (StreamSource) {}
+}
+
+message InputSource {
+	optional string file = 1;
+}
+
+message ReadResponse {
+	optional Status status = 1;
+	repeated int32 list = 2;
+}
+
+message OutputDestination {
+	optional string path = 1;
+}
+
+message OutputResponse {
+	optional Status status = 1;
+	optional string data = 2;
+}
+
+message DataDestination {
+
+}
+
+message SendResponse{
+	optional Status status = 1;
+	optional string data = 2;
+}
+
+message DataSource {	
+	repeated IntList data = 1;
+	optional string outputPath = 2;
+}
+
+message IntList {
+	repeated int32 list = 1;
+}
+
+message ReceiveResponse {
+	optional Status status = 1;
+	optional string data = 2;
+}
+
+message StructuredData{
+	//Was having issues with map type
+	message DataMap{
+		optional int32 key = 1;
+		repeated int32 values = 2;
+	}
+	repeated DataMap data = 1;
+	optional string outputPath = 2;
+}
+
+message WriteResponse{
+	optional Status status = 1;
+	optional string data = 2;
+}
+
+message Empty{
+
+}
+
+message StreamSource {
+	repeated int32 values = 1;
+}
+
+enum Status {
+SUCCESS = 0;
+FAILURE = 1;
+}

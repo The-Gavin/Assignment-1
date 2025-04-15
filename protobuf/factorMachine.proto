@@ -25,11 +25,12 @@ message InputResponse {
 }
 
 message OutputDestination {
-  optional string file = 1;
+  optional string path = 1;
 }
 
 message OutputResponse {
   optional Status status = 1;
+  optional string data = 2;
 }
 
 enum Status {

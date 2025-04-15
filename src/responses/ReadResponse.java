@@ -6,20 +6,20 @@ import interfaces.Response;
 
 public class ReadResponse implements Response<List<Integer>> {
     //TBD
-    private final Response.Status result;
+    private final Response.Status status;
     private List<Integer> list = null;
 
     public ReadResponse(Response.Status s) {
-        this.result = s;
+        this.status = s;
     }
 
     public ReadResponse(List<Integer> list, Response.Status s) {
         this.list = list;
-        this.result = s;
+        this.status = s;
     }
 
     public Response.Status getStatus() {
-        return result;
+        return status;
     }
 
 	@Override

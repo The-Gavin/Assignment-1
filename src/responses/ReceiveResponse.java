@@ -3,16 +3,16 @@ package responses;
 import interfaces.Response;
 
 public class ReceiveResponse implements Response<String>{
-    private final Response.Status result;
+    private final Response.Status status;
     private String data;
 
     public ReceiveResponse(Response.Status s, String data) {
-        this.result = s;
+        this.status = s;
         this.data = data;
     }
 
     public Response.Status getStatus() {
-        return result;
+        return status;
     }
 
 	@Override

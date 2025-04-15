@@ -75,6 +75,7 @@ message StreamSource {
 }
 
 enum Status {
-SUCCESS = 0;
-FAILURE = 1;
+UNKOWN = 0;
+SUCCESS = 1;
+FAILURE = 2;
 }

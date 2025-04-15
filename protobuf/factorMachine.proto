@@ -1,0 +1,39 @@
+syntax = "proto3";
+package protos;
+
+service CoordinationService {
+  rpc ProvideInputSource(InputSource) returns (InputResponse);
+  rpc ProvideOutputDestination(OutputDestination) returns (OutputResponse);
+  rpc CoordinationInitializer(InitializationRequest) returns (InitializationResponse);
+}
+
+message InitializationRequest {
+  string compComponent = 1;
+  string processComponent = 2;
+}
+
+message InitializationResponse {
+  optional Status status = 1;
+}
+
+message InputSource {
+  optional string file = 1;
+}
+
+message InputResponse {
+  optional Status status = 1;
+}
+
+message OutputDestination {
+  optional string file = 1;
+}
+
+message OutputResponse {
+  optional Status status = 1;
+}
+
+enum Status {
+  UNKNOWN = 0;
+  SUCCESS = 1;
+  FAILURE = 2;
+}

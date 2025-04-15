@@ -44,11 +44,12 @@ public class NetworkTest {
 			System.out.println(e);
 		}
 		
+		
 		OutputResponse output = new OutputResponse(Response.Status.FAILURE, "Failure");
 		try {
 			output = server.provideOutputDestination(outputDestination);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.print(e);
 		}
 		
 		Assertions.assertEquals(input.getStatus(), Response.Status.SUCCESS);

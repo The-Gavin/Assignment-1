@@ -31,7 +31,7 @@ public class ProcessingImplement implements Processing {
 	}
 
 	//Receive processed data from computation component
-	public ReceiveResponse receiveData(DataSource source, String outputPath) {
+	public ReceiveResponse receiveData(DataSource source) {
 		return new ReceiveResponse(Response.Status.SUCCESS, "");
 	}
 
@@ -53,7 +53,7 @@ public class ProcessingImplement implements Processing {
 	}
 
 	@Override
-	public WriteResponse writeData(StructuredData source, String outputPath) {
+	public WriteResponse writeData(StructuredData source) {
 		// TODO Auto-generated method stub
 		return null;
 	}

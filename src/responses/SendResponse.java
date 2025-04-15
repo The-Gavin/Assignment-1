@@ -4,16 +4,16 @@ import interfaces.Response;
 
 public class SendResponse implements Response<String> {
     //TBD
-    private final Status result;
+    private final Status status;
     private String data;
 
     public SendResponse(Status s, String data) {
-        this.result = s;
+        this.status = s;
         this.data = data;
     }
 
     public Status getStatus() {
-        return result;
+        return status;
     }
 
 	@Override

@@ -4,17 +4,17 @@ import interfaces.Response;
 
 public class OutputResponse implements Response<String>{
 	
-	private final Response.Status result;
+	private final Response.Status status;
 	private String data;
 	
 	public OutputResponse(Response.Status s, String str) {
-		result = s;
+		this.status = s;
 		this.data = str;
 	}
 
 	@Override
 	public Response.Status getStatus() {
-		return result;
+		return status;
 	}
 	
 	@Override

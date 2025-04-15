@@ -87,8 +87,8 @@ public class MultiThreadWebServer implements WebServer {
 		if (factoringResponse.getStatus().equals(Response.Status.FAILURE)) {
 			return factoringResponse;
 		}
-		DataSource facotoredData = new DataSource(factoringResponse.getData()); 
-		if ( processingComponent.receiveData(facotoredData, outputPath).getStatus().equals(factoringResponse.getStatus())) {
+		DataSource facotoredData = new DataSource(factoringResponse.getData(), outputPath); 
+		if ( processingComponent.receiveData(facotoredData).getStatus().equals(factoringResponse.getStatus())) {
 			return factoringResponse;
 		}
 		return new FactorResponse(Response.Status.FAILURE);

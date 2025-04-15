@@ -56,14 +56,14 @@ public class DataStorage implements Processing{
 	}
 
 	@Override
-	public ReceiveResponse receiveData(DataSource source, String outputPath) {
+	public ReceiveResponse receiveData(DataSource source) {
 		// TODO Auto-generated method stub
 		if (source.getData().isEmpty()) {
 			return new ReceiveResponse(Response.Status.FAILURE, "DataSource contained no data");
 		}
-		StructuredData data = new StructuredData(source);
+		StructuredData data = new StructuredData(source, source.getOutput());
 		
-		WriteResponse written = writeData(data, outputPath);
+		WriteResponse written = writeData(data);
 		if (written.getStatus().equals(Response.Status.SUCCESS)) {
 			return new ReceiveResponse(Response.Status.SUCCESS, "Data has been Written to file");
 		}else {
@@ -72,8 +72,8 @@ public class DataStorage implements Processing{
 	}
 
 	@Override
-	public WriteResponse writeData(StructuredData source, String outputPath) {
-		File outputFile = new File(outputPath);
+	public WriteResponse writeData(StructuredData source) {
+		File outputFile = new File(source.getOutput());
 		List<String> serializedData = new ArrayList<>();
 		for (Integer num: source.getData().keySet()) {
 			serializedData.add(serialize(num, source.getData().get(num)));

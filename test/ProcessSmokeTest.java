@@ -30,6 +30,6 @@ public class ProcessSmokeTest {
     public void receiveSmokeTest() throws Exception {
         Processing data = new ProcessingImplement();
         DataSource processedData = Mockito.mock(DataSource.class);
-        Assertions.assertEquals(data.receiveData(processedData, "File path").getStatus(), Response.Status.SUCCESS);
+        Assertions.assertEquals(data.receiveData(processedData).getStatus(), Response.Status.SUCCESS);
     }
 }

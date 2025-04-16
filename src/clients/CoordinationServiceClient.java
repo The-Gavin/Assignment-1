@@ -53,11 +53,11 @@ public class CoordinationServiceClient {
     	
     	try {
     		response = blockingStub.provideInputSource(source);
-    	} catch(StatusRuntimeException e) {
+    	} catch (StatusRuntimeException e) {
     		e.printStackTrace();
     		return;
     	}
-    	if(response.getStatus().equals(Response.Status.FAILURE)){
+    	if (response.getStatus().equals(Response.Status.FAILURE)){
     		System.err.println("Error InputResponse Failed");
     	}else {
     		System.out.println("Input file at " + source.getFile());
@@ -73,7 +73,7 @@ public class CoordinationServiceClient {
     	
     	try {
     		response = blockingStub.provideOutputDestination(destination);
-    	}catch(StatusRuntimeException e) {
+    	}catch (StatusRuntimeException e) {
     		e.printStackTrace();
     		return;
     	}
@@ -85,7 +85,7 @@ public class CoordinationServiceClient {
     	
     	try {
     		response = blockingStub.coordinationInitializer(request);
-    	}catch(StatusRuntimeException e) {
+    	}catch (StatusRuntimeException e) {
     		e.printStackTrace();
     		return;
     	}

@@ -2,14 +2,13 @@ syntax = "proto3";
 package protos;
 
 service CoordinationService {
-  rpc ProvideInputSource(InputSource) returns (InputResponse);
-  rpc ProvideOutputDestination(OutputDestination) returns (OutputResponse);
-  rpc CoordinationInitializer(InitializationRequest) returns (InitializationResponse);
+  rpc provideInputSource(InputSource) returns (InputResponse);
+  rpc provideOutputDestination(OutputDestination) returns (OutputResponse);
+  rpc coordinationInitializer(InitializationRequest) returns (InitializationResponse);
 }
 
 message InitializationRequest {
-  string compComponent = 1;
-  string processComponent = 2;
+  
 }
 
 message InitializationResponse {

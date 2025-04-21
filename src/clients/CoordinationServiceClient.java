@@ -46,7 +46,7 @@ public class CoordinationServiceClient {
     }*/
     
     public void provideInputSource() {
-    	System.out.print("Enter Path of input data:");
+    	System.out.print("Enter Path for input data: ");
     	String path = new Scanner(System.in).next();
     	InputSource source = InputSource.newBuilder().setFile(path).build();
     	InputResponse response;
@@ -89,6 +89,9 @@ public class CoordinationServiceClient {
     		e.printStackTrace();
     		return;
     	}
+    	if(response.getStatus().getNumber() == 1) {
+    		System.out.println("Server connection established! \nComponents initialized.");
+    	}
     }
 
     public static void main(String[] args) throws Exception {
@@ -100,8 +103,8 @@ public class CoordinationServiceClient {
         try {
         	CoordinationServiceClient client = new CoordinationServiceClient(channel); // Boilerplate TODO: update to this class name
             client.coordinationInitializer();
-        	client.provideOutputDestination();
         	client.provideInputSource();
+        	client.provideOutputDestination();
         } finally {
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }

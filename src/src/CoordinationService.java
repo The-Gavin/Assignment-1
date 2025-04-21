@@ -36,11 +36,12 @@ import protos.FactorMachine.FactorRequest;
 import protos.FactorMachine.FactorResponse;
 
 import protos.ProcessingOuterClass.DataSource;
+import protos.ProcessingOuterClass.ReceiveResponse;
 
 public class CoordinationService extends CoordinationServiceImplBase{
 	
 	private static final int NUMBER_OF_THREADS = 10;
-	CompFactor computationComponent;
+	ProtoCompEngineComponent computationComponent;
 	ProcessingBlockingStub processingComponent;
 	
 	boolean initialize = false;
@@ -48,7 +49,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void coordinationInitializer(InitializationRequest request,
 		StreamObserver<InitializationResponse> responseObserver) {
-		this.computationComponent = new CompEngineComponent();
+		this.computationComponent = new ProtoCompEngineComponent();
 		
 		String target = "localHost:50051";
 		ChannelCredentials creds = InsecureChannelCredentials.create();
@@ -86,22 +87,19 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void provideOutputDestination(OutputDestination request, StreamObserver<OutputResponse> responseObserver) {
 		
-		//OutputResponse outputSent = processingComponent.getOutputDestination(outputDestination);
+		OutputResponse outputSent = processingComponent.getOutputDestination(request);
 		
 		
-		OutputResponse response;
+		//OutputResponse response;
 		//if (outputSent.getStatus().equals(Response.Status.SUCCESS)) {
-			response = OutputResponse.newBuilder()
-					.setStatus(Status.forNumber(1))
-					.setData("Component recieved outputDestination")
-					.build();
+			//response = OutputResponse.newBuilder().setStatus(Status.forNumber(1)).setData("Component recieved outputDestination").build();
 		/*}else {
 			response = OutputResponse.newBuilder()
 					.setStatus(Status.forNumber(2))
 					.setData("Component could not recieve outputDestination")
 					.build();
 		}*/
-		responseObserver.onNext(response);
+		responseObserver.onNext(outputSent);
 		responseObserver.onCompleted();
 	}
 	
@@ -118,11 +116,10 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				.addAllData(factoringResponse.getFactorListsList())
 				.setOutputPath(request.getPath())
 				.build(); 
-		if (processingComponent.receiveData(facotoredData).getStatus().equals(factoringResponse.getStatus())) {
-			responseObserver.onNext(factoringResponse);
-			responseObserver.onCompleted();
-		}
-		responseObserver.onNext(FactorResponse.newBuilder().setStatus(Status.forNumber(2)).build());
+		 ReceiveResponse dataWritten = processingComponent.receiveData(facotoredData);
+			
+		responseObserver.onNext(FactorResponse.newBuilder().setStatus(Status.forNumber(1)).build());
+		responseObserver.onCompleted();
 		
 	}
 	
@@ -154,7 +151,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				throw new RuntimeException(e);
 			}
 		});
-		
+		threadPool.close();
 		return toReturn.build();
 	}
 }

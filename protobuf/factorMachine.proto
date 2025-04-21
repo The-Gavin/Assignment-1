@@ -1,10 +1,11 @@
-syntax = "proto3";
+syntax = "proto2";
 package protos;
 
 service CoordinationService {
   rpc provideInputSource(InputSource) returns (InputResponse);
   rpc provideOutputDestination(OutputDestination) returns (OutputResponse);
   rpc coordinationInitializer(InitializationRequest) returns (InitializationResponse);
+  rpc factor(FactorRequest) returns (FactorResponse);
 }
 
 message InitializationRequest {
@@ -21,6 +22,7 @@ message InputSource {
 
 message InputResponse {
   optional Status status = 1;
+  repeated int32 data = 2;
 }
 
 message OutputDestination {
@@ -30,6 +32,25 @@ message OutputDestination {
 message OutputResponse {
   optional Status status = 1;
   optional string data = 2;
+}
+
+message ReadResponse {
+	optional Status status = 1;
+	repeated int32 data = 2;
+}
+
+message FactorRequest {
+	optional InputResponse data = 1;
+	optional string path = 2; 
+}
+
+message FactorResponse {
+	optional Status status = 1;
+	repeated IntList factorLists = 2;
+}
+
+message IntList {
+	repeated int32 nums = 1;
 }
 
 enum Status {

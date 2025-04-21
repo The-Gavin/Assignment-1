@@ -13,8 +13,8 @@ public class CoordinationServer { // Boilerplate TODO: Change name of class
       private Server server;
 
       private void start() throws IOException {
-        /* The port on which the server should run */
-        int port = 50051; // Boilerplate TODO: Consider changing the port (only one server per port)
+        
+        int port = 50051;
         
         server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
         	.addService(new ProcessingService().bindService())
@@ -23,7 +23,6 @@ public class CoordinationServer { // Boilerplate TODO: Change name of class
             .build()
             .start();
         System.out.println("Server started on port " + port);
-        System.out.println(server.getServices().get(0).getServiceDescriptor());
         Runtime.getRuntime().addShutdownHook(new Thread() {
           @Override
           public void run() {
@@ -50,7 +49,7 @@ public class CoordinationServer { // Boilerplate TODO: Change name of class
       }
 
       public static void main(String[] args) throws Exception {
-          CoordinationServer server = new CoordinationServer(); // Boilerplate TODO: Change name of class
+          CoordinationServer server = new CoordinationServer();
           server.start();
           server.blockUntilShutdown();
       }

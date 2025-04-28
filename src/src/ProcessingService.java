@@ -31,11 +31,8 @@ public class ProcessingService extends ProcessingImplBase{
 		// TODO Auto-generated method stub
 		ReadResponse parsedData = parseData(request);
 		
-		if(parsedData.getStatus().getNumber() == 1) {
-			responseObserver.onNext(parsedData);
-		}else {
-			responseObserver.onError(new Exception("Error reading input data"));
-		}
+		responseObserver.onNext(parsedData);
+		
 		responseObserver.onCompleted();
 		
 	}

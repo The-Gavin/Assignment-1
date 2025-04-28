@@ -26,11 +26,11 @@ public class ProtoCompEngineComponent {
 			if (values.isEmpty()) {
 				return FactorResponse.newBuilder().setStatus(Status.FAILURE).build();
 			}
-			
+
 			for (int i = 0; i < values.size(); i++) {
-				messenger.addFactorLists(
-						findFactors(values.get(i)));
+				messenger.addFactorLists(findFactors(values.get(i)));
 			}
+			
 			return messenger.build();
 		}
 

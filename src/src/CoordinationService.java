@@ -40,7 +40,7 @@ import protos.ProcessingOuterClass.ReceiveResponse;
 
 public class CoordinationService extends CoordinationServiceImplBase{
 	
-	private static final int NUMBER_OF_THREADS = 10;
+	private static final int NUMBER_OF_THREADS = 20;
 	ProtoCompEngineComponent computationComponent;
 	ProcessingBlockingStub processingComponent;
 	
@@ -130,10 +130,12 @@ public class CoordinationService extends CoordinationServiceImplBase{
 		Queue<List<Integer>> singleLists = new LinkedList<>();
 		FactorResponse.Builder toReturn = FactorResponse.newBuilder().setStatus(Status.forNumber(1));
 		
-		for (Integer fact: factors.getData()) {
-			List<Integer> holdValue = new ArrayList<>();
-			holdValue.add(fact);
-			singleLists.add(holdValue);
+		List<Integer> data = factors.getData();
+		List<List<Integer>> slices = splitList(data);
+		
+		//makes list of single values need to adjust to split list into sublists
+		for (List<Integer> nums: slices) {
+			singleLists.add(nums);
 		}
 		
 		for (int i = 0; i < threadCount; i++) {
@@ -153,5 +155,25 @@ public class CoordinationService extends CoordinationServiceImplBase{
 		});
 		threadPool.close();
 		return toReturn.build();
+	}
+	
+	private List<List<Integer>> splitList(List<Integer> data){
+		int start = 0;
+		int interval = data.size() / NUMBER_OF_THREADS;
+		int end = start + interval;
+		List<List<Integer>> subLists = new ArrayList<>();
+		
+		while(end <= data.size()) {
+			
+			subLists.add(data.subList(start, end));
+			start = end;
+			if(end + interval < data.size() || end == data.size()) {
+				end += interval;
+			}else {
+				end = data.size();
+			}
+		}
+		
+		return subLists;
 	}
 }

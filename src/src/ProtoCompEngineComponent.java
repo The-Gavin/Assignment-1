@@ -36,7 +36,7 @@ public class ProtoCompEngineComponent {
 
 		private IntList findFactors(int val){
 			List<Integer> factors = new ArrayList<>();
-			for (int i = 1; i < val; i++) {
+			for (int i = 1; i < val/2; i++) {
 				if (val%i == 0) {
 					factors.add(i);
 				}

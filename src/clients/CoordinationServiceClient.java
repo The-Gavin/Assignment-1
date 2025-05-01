@@ -57,7 +57,7 @@ public class CoordinationServiceClient {
     
     public String getInputs() {
     	String userInput = null;
-		while(userInput == null) {
+		while (userInput == null) {
 			System.out.println("\nHow would you like to input your data?"
 				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1,2): ");
 			Scanner sc = new Scanner(System.in);
@@ -77,7 +77,7 @@ public class CoordinationServiceClient {
 					FileWriter encoder = new FileWriter(tempFile);
 					encoder.write(userInput);
 					userInput = tempFile.getPath();
-				}catch(IOException e) {
+				}catch (IOException e) {
 					System.out.print(e.toString());
 				}
 				
@@ -86,7 +86,7 @@ public class CoordinationServiceClient {
 			case 2: {
 				System.out.println("Please Provide the file path:");
 				userInput = sc.next();
-				if(!(new File(userInput).exists())) {
+				if (!(new File(userInput).exists())) {
 					userInput = null;
 					System.out.println("File could not be found please enter a valid path");
 				}
@@ -127,12 +127,12 @@ public class CoordinationServiceClient {
     		e.printStackTrace();
     		return;
     	}
-    	if(response.getStatus().getNumber() == 1) {
+    	if (response.getStatus().getNumber() == 1) {
     		System.out.println("Server connection established! \nComponents initialized.");
     	}
     }
     
-    public void factor(InputResponse inputs,OutputResponse outputs) {
+    public void factor(InputResponse inputs, OutputResponse outputs) {
     	FactorRequest request = FactorRequest.newBuilder()
     			.setData(inputs)
     			.setPath(outputs.getData())
@@ -141,7 +141,7 @@ public class CoordinationServiceClient {
     	
     	try {
     		response = blockingStub.factor(request);
-    	}catch(StatusRuntimeException e) {
+    	}catch (StatusRuntimeException e) {
     		e.printStackTrace();
     	}
     }

@@ -71,7 +71,7 @@ public class ProcessingService extends ProcessingImplBase{
 	public void receiveData(DataSource request, StreamObserver<ReceiveResponse> responseObserver) {
 		List<IntList> temp = request.getDataList();
 		List<List<Integer>> source = new ArrayList<>();
-		for(IntList list: temp) {
+		for (IntList list: temp) {
 			source.add(list.getNumsList());
 		}
 		
@@ -85,9 +85,9 @@ public class ProcessingService extends ProcessingImplBase{
 		StructuredData.Builder dataBuilder = StructuredData.newBuilder()
 				.setOutputPath(request.getOutputPath());
 		
-		for(List<Integer> list: source) {
+		for (List<Integer> list: source) {
 			StructuredData.DataMap mapping = StructuredData.DataMap.newBuilder()
-					.setKey(list.getLast())
+					.setKey(list.get(list.size() - 1))
 					.addAllValues(list)
 					.build();
 			dataBuilder.addData(mapping);
@@ -111,9 +111,9 @@ public class ProcessingService extends ProcessingImplBase{
 		File outputFile = new File(request.getOutputPath());
 		List<String> serializedData = new ArrayList<>();
 		
-		Map<Integer,List<Integer>> data = new HashMap<>();
+		Map<Integer, List<Integer>> data = new HashMap<>();
 		
-		for(DataMap mapping: request.getDataList()) {
+		for (DataMap mapping: request.getDataList()) {
 			data.put(mapping.getKey(), mapping.getValuesList());
 		}
 		 

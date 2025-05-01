@@ -20,7 +20,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import protos.CoordinationServiceGrpc;
-import protos.CoordinationServiceGrpc.*;
+import protos.CoordinationServiceGrpc.CoordinationServiceImplBase;
 import protos.FactorMachine.InitializationRequest;
 import protos.FactorMachine.InitializationResponse;
 import protos.FactorMachine.InputResponse;
@@ -154,7 +154,6 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				throw new RuntimeException(e);
 			}
 		});
-		threadPool.close();
 		return toReturn.build();
 	}
 	
@@ -164,11 +163,11 @@ public class CoordinationService extends CoordinationServiceImplBase{
 		int end = start + interval;
 		List<List<Integer>> subLists = new ArrayList<>();
 		
-		while(end <= data.size()) {
+		while (end <= data.size()) {
 			
 			subLists.add(data.subList(start, end));
 			start = end;
-			if(end + interval < data.size() || end == data.size()) {
+			if (end + interval < data.size() || end == data.size()) {
 				end += interval;
 			}else {
 				end = data.size();

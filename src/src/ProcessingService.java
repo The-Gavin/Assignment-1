@@ -124,6 +124,7 @@ public class ProcessingService extends ProcessingImplBase{
 		for (String s: serializedData) {
 			output.append(s);
 			output.append("; ");
+			output.append(System.lineSeparator());
 		}
 	
 		output.deleteCharAt(output.length()-1);

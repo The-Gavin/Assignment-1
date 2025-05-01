@@ -1,6 +1,11 @@
 package clients;
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -31,8 +36,9 @@ public class CoordinationServiceClient {
     }
     
     public InputResponse provideInputSource() {
-    	System.out.print("Enter input file path: ");
-    	String userInput = new Scanner(System.in).next();
+    	
+    	String userInput = getInputs();
+    	
     	InputSource source = InputSource.newBuilder().setFile(userInput).build();
     	InputResponse response = null;
     	
@@ -48,6 +54,51 @@ public class CoordinationServiceClient {
     	}
     	return response;
     }
+    
+    public String getInputs() {
+    	String userInput = null;
+		while(userInput == null) {
+			System.out.println("\nHow would you like to input your data?"
+				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1,2): ");
+			Scanner sc = new Scanner(System.in);
+			switch (sc.nextInt()) {
+			case 1: {
+				System.out.println("Please input your numbers seperated by spaces: ");
+				userInput = sc.next();
+				List<Integer> userNumbers = new ArrayList<>();
+				
+				
+				File tempFile = new File("." + File.separatorChar + "input.csv");
+				
+				tempFile.deleteOnExit();
+				
+				try {
+					tempFile.createNewFile();
+					FileWriter encoder = new FileWriter(tempFile);
+					encoder.write(userInput);
+					userInput = tempFile.getPath();
+				}catch(IOException e) {
+					System.out.print(e.toString());
+				}
+				
+				break;
+			}
+			case 2: {
+				System.out.println("Please Provide the file path:");
+				userInput = sc.next();
+				if(!(new File(userInput).exists())) {
+					userInput = null;
+					System.out.println("File could not be found please enter a valid path");
+				}
+				break;
+			}
+			default:
+				System.out.print("Please Choose a proper option(1,2)");
+				break;
+			}
+		}
+		return userInput;
+	}
     
     public OutputResponse provideOutputDestination() {
     	System.out.print("Enter a output Destination: ");
@@ -97,7 +148,7 @@ public class CoordinationServiceClient {
 
     public static void main(String[] args) throws Exception {
         String target = "localhost:50051";  // Boilerplate TODO: make sure the server/port match the server/port you want to connect to
-
+        long startTime = 0;
         ChannelCredentials creds = InsecureChannelCredentials.create();
         ManagedChannelBuilder<?> temp = Grpc.newChannelBuilder(target, creds);
         ManagedChannel channel = temp.build();
@@ -105,9 +156,13 @@ public class CoordinationServiceClient {
         	CoordinationServiceClient client = new CoordinationServiceClient(channel); // Boilerplate TODO: update to this class name
             client.coordinationInitializer();
         	InputResponse inputs = client.provideInputSource();
+        	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();
+        	System.out.print("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
+        	startTime = System.currentTimeMillis();
         	client.factor(inputs, output);
         } finally {
+        	System.out.println(System.currentTimeMillis() - startTime);
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
     }

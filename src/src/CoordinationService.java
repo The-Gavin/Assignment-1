@@ -138,16 +138,17 @@ public class CoordinationService extends CoordinationServiceImplBase{
 			singleLists.add(nums);
 		}
 		
+		System.out.println("Sending " + singleLists.size() + " Slices to be factored");
 		for (int i = 0; i < threadCount; i++) {
 			StreamSource number = new StreamSource(singleLists.poll());
 			results.add(threadPool.submit(() -> 
 				computationComponent.readStream(number)));
 		}
 		
-		
 		results.forEach(future -> {
 			try {
 				FactorResponse listOfFactors = (FactorResponse) future.get();
+				System.out.println("list of Factors recieved");
 				toReturn.addFactorLists(listOfFactors.getFactorLists(0));
 			}catch (Exception e) {
 				throw new RuntimeException(e);
@@ -159,7 +160,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	
 	private List<List<Integer>> splitList(List<Integer> data){
 		int start = 0;
-		int interval = data.size() / NUMBER_OF_THREADS;
+		int interval = Math.max(data.size() / NUMBER_OF_THREADS, 1);
 		int end = start + interval;
 		List<List<Integer>> subLists = new ArrayList<>();
 		

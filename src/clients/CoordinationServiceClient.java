@@ -1,6 +1,11 @@
 package clients;
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +19,8 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import protos.CoordinationServiceGrpc;
 import protos.CoordinationServiceGrpc.CoordinationServiceBlockingStub;
+import protos.FactorMachine.FactorRequest;
+import protos.FactorMachine.FactorResponse;
 import protos.FactorMachine.InitializationRequest;
 import protos.FactorMachine.InitializationResponse;
 import protos.FactorMachine.InputResponse;
@@ -27,56 +34,87 @@ public class CoordinationServiceClient {
     public CoordinationServiceClient(Channel channel) {
         blockingStub = CoordinationServiceGrpc.newBlockingStub(channel);  // Boilerplate TODO: update to appropriate blocking stub
     }
-
-    // Boilerplate TODO: replace this method with actual client call/response logic
-    /*public void order() {        
-        PhoneOrderRequest request = PhoneOrderRequest.newBuilder().setModel("android").setIncludeWarranty(true).build();
-        PhoneOrderResponse response;
-        try {
-            response = blockingStub.createPhoneOrder(request);
-        } catch (StatusRuntimeException e) {
-            e.printStackTrace();
-            return;
-        }
-        if (response.hasErrorMessage()) {
-            System.err.println("Error: " + response.getErrorMessage());
-        } else {
-            System.out.println("Order number: " + response.getOrderNumber());
-        }
-    }*/
     
-    public void provideInputSource() {
-    	System.out.print("Enter Path of input data:");
-    	String path = new Scanner(System.in).next();
-    	InputSource source = InputSource.newBuilder().setFile(path).build();
-    	InputResponse response;
+    public InputResponse provideInputSource() {
+    	
+    	String userInput = getInputs();
+    	
+    	InputSource source = InputSource.newBuilder().setFile(userInput).build();
+    	InputResponse response = null;
     	
     	try {
     		response = blockingStub.provideInputSource(source);
     	} catch (StatusRuntimeException e) {
     		e.printStackTrace();
-    		return;
     	}
     	if (response.getStatus().equals(Response.Status.FAILURE)){
     		System.err.println("Error InputResponse Failed");
     	}else {
     		System.out.println("Input file at " + source.getFile());
     	}
+    	return response;
     }
     
-    public void provideOutputDestination() {
-    	System.out.print("Enter a output Destination");
+    public String getInputs() {
+    	String userInput = null;
+		while (userInput == null) {
+			System.out.println("\nHow would you like to input your data?"
+				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1,2): ");
+			Scanner sc = new Scanner(System.in);
+			switch (sc.nextInt()) {
+			case 1: {
+				System.out.println("Please input your numbers seperated by spaces: ");
+				userInput = sc.next();
+				List<Integer> userNumbers = new ArrayList<>();
+				
+				
+				File tempFile = new File("." + File.separatorChar + "input.csv");
+				
+				tempFile.deleteOnExit();
+				
+				try {
+					tempFile.createNewFile();
+					FileWriter encoder = new FileWriter(tempFile);
+					encoder.write(userInput);
+					userInput = tempFile.getPath();
+				}catch (IOException e) {
+					System.out.print(e.toString());
+				}
+				
+				break;
+			}
+			case 2: {
+				System.out.println("Please Provide the file path:");
+				userInput = sc.next();
+				if (!(new File(userInput).exists())) {
+					userInput = null;
+					System.out.println("File could not be found please enter a valid path");
+				}
+				break;
+			}
+			default:
+				System.out.print("Please Choose a proper option(1,2)");
+				break;
+			}
+		}
+		return userInput;
+	}
+    
+    public OutputResponse provideOutputDestination() {
+    	System.out.print("Enter a output Destination: ");
     	String path = new Scanner(System.in).next();
     	OutputDestination destination = OutputDestination.newBuilder()
     			.setPath(path).build();
-    	OutputResponse response;
+    	OutputResponse response = null;
     	
     	try {
     		response = blockingStub.provideOutputDestination(destination);
     	}catch (StatusRuntimeException e) {
     		e.printStackTrace();
-    		return;
     	}
+    	
+    	System.out.println(response.getData());
+    	return response;
     }
     
     public void coordinationInitializer() {
@@ -89,20 +127,42 @@ public class CoordinationServiceClient {
     		e.printStackTrace();
     		return;
     	}
+    	if (response.getStatus().getNumber() == 1) {
+    		System.out.println("Server connection established! \nComponents initialized.");
+    	}
+    }
+    
+    public void factor(InputResponse inputs, OutputResponse outputs) {
+    	FactorRequest request = FactorRequest.newBuilder()
+    			.setData(inputs)
+    			.setPath(outputs.getData())
+    			.build();
+    	FactorResponse response;
+    	
+    	try {
+    		response = blockingStub.factor(request);
+    	}catch (StatusRuntimeException e) {
+    		e.printStackTrace();
+    	}
     }
 
     public static void main(String[] args) throws Exception {
         String target = "localhost:50051";  // Boilerplate TODO: make sure the server/port match the server/port you want to connect to
-
+        long startTime = 0;
         ChannelCredentials creds = InsecureChannelCredentials.create();
         ManagedChannelBuilder<?> temp = Grpc.newChannelBuilder(target, creds);
         ManagedChannel channel = temp.build();
         try {
         	CoordinationServiceClient client = new CoordinationServiceClient(channel); // Boilerplate TODO: update to this class name
             client.coordinationInitializer();
-        	client.provideOutputDestination();
-        	client.provideInputSource();
+        	InputResponse inputs = client.provideInputSource();
+        	System.out.println("Inputs recieved and process");
+        	OutputResponse output = client.provideOutputDestination();
+        	System.out.print("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
+        	startTime = System.currentTimeMillis();
+        	client.factor(inputs, output);
         } finally {
+        	System.out.println(System.currentTimeMillis() - startTime);
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
     }

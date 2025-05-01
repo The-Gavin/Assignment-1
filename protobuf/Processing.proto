@@ -8,13 +8,7 @@ service Processing {
  rpc getOutputDestination (OutputDestination) returns (OutputResponse) {}
  rpc sendDataStream (DataDestination) returns (SendResponse) {}
  rpc receiveData (DataSource) returns (ReceiveResponse) {}
- rpc writeData (StructuredData) returns (WriteResponse) {}
  rpc getStream (Empty) returns (StreamSource) {}
-}
-
-message ReadResponse {
-	optional Status status = 1;
-	repeated int32 list = 2;
 }
 
 message DataDestination {
@@ -29,10 +23,6 @@ message SendResponse{
 message DataSource {	
 	repeated IntList data = 1;
 	optional string outputPath = 2;
-}
-
-message IntList {
-	repeated int32 list = 1;
 }
 
 message ReceiveResponse {

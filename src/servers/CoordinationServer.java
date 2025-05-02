@@ -1,4 +1,4 @@
-package src;
+package servers;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +8,8 @@ import io.grpc.Server;
 import io.grpc.protobuf.services.ProtoReflectionService;
 import protos.CoordinationServiceGrpc.CoordinationServiceImplBase;
 import protos.ProcessingGrpc.ProcessingImplBase;
+import src.CoordinationService;
+import src.ProcessingService;
 
 public class CoordinationServer { // Boilerplate TODO: Change name of class
       private Server server;

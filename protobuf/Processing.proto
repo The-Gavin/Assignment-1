@@ -44,11 +44,3 @@ message WriteResponse{
 	optional Status status = 1;
 	optional string data = 2;
 }
-
-message Empty{
-
-}
-
-message StreamSource {
-	repeated int32 values = 1;
-}

@@ -1,0 +1,9 @@
+syntax = "proto2";
+package protos;
+
+import "factorMachine.proto";
+
+service CompEngine {
+	rpc initializeComputation(Empty) returns (InitializationResponse);
+	rpc readStream (StreamSource) returns (FactorResponse);
+}

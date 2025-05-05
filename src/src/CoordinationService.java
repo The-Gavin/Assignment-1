@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import clients.CoordinationServiceClient;
+import clients.DataStorageClient;
 import interfaces.CompFactor;
 import interfaces.Processing;
 import interfaces.Response;
@@ -42,7 +43,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	
 	private static final int NUMBER_OF_THREADS = 20;
 	ProtoCompEngineComponent computationComponent;
-	ProcessingBlockingStub processingComponent;
+	private DataStorageClient dataClient;
 	
 	boolean initialize = false;
 
@@ -51,12 +52,12 @@ public class CoordinationService extends CoordinationServiceImplBase{
 		StreamObserver<InitializationResponse> responseObserver) {
 		this.computationComponent = new ProtoCompEngineComponent();
 		
-		String target = "localHost:50051";
+		String target = "localHost:50052";
 		ChannelCredentials creds = InsecureChannelCredentials.create();
         ManagedChannelBuilder<?> temp = Grpc.newChannelBuilder(target, creds);
         ManagedChannel channel = temp.build();
         
-		this.processingComponent = ProcessingGrpc.newBlockingStub(channel);
+		this.dataClient = new DataStorageClient(channel);
 	    	
 	    InitializationResponse response = InitializationResponse.newBuilder()
 	    		.setStatus(Status.forNumber(1)).build();
@@ -72,7 +73,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void provideInputSource(InputSource request, StreamObserver<InputResponse> responseObserver) {
 		ReadResponse returned = null;
-		returned = processingComponent.readData(request);
+		returned = dataClient.readData(request);
 		
 		
 		InputResponse response = InputResponse.newBuilder()
@@ -87,7 +88,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void provideOutputDestination(OutputDestination request, StreamObserver<OutputResponse> responseObserver) {
 		
-		OutputResponse outputSent = processingComponent.getOutputDestination(request);
+		OutputResponse outputSent = dataClient.getOutputDestination(request);
 		
 		
 		//OutputResponse response;
@@ -116,7 +117,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				.addAllData(factoringResponse.getFactorListsList())
 				.setOutputPath(request.getPath())
 				.build(); 
-		 ReceiveResponse dataWritten = processingComponent.receiveData(facotoredData);
+		 ReceiveResponse dataWritten = dataClient.receiveData(facotoredData);
 			
 		responseObserver.onNext(FactorResponse.newBuilder().setStatus(Status.forNumber(1)).build());
 		responseObserver.onCompleted();

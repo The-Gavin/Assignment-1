@@ -72,13 +72,19 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void provideInputSource(InputSource request, StreamObserver<InputResponse> responseObserver) {
 		ReadResponse returned = null;
+		InputResponse response = null;
 		returned = processingComponent.readData(request);
 		
-		
-		InputResponse response = InputResponse.newBuilder()
-				.setStatus(Status.forNumber(1))
-				.addAllData(returned.getDataList())
-				.build();
+		if (returned.getStatus().equals(Status.SUCCESS)) {
+			response = InputResponse.newBuilder()
+					.setStatus(Status.forNumber(1))
+					.addAllData(returned.getDataList())
+					.build();
+		} else {
+			response = InputResponse.newBuilder()
+					.setStatus(Status.FAILURE)
+					.build();
+		}
 		
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();
@@ -112,11 +118,11 @@ public class CoordinationService extends CoordinationServiceImplBase{
 		if (factoringResponse.getStatus().getNumber() != 1) {
 			responseObserver.onNext(factoringResponse);
 		}
-		DataSource facotoredData = DataSource.newBuilder()
+		DataSource factoredData = DataSource.newBuilder()
 				.addAllData(factoringResponse.getFactorListsList())
 				.setOutputPath(request.getPath())
 				.build(); 
-		 ReceiveResponse dataWritten = processingComponent.receiveData(facotoredData);
+		 ReceiveResponse dataWritten = processingComponent.receiveData(factoredData);
 			
 		responseObserver.onNext(FactorResponse.newBuilder().setStatus(Status.forNumber(1)).build());
 		responseObserver.onCompleted();
@@ -173,7 +179,6 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				end = data.size();
 			}
 		}
-		
 		return subLists;
 	}
 }

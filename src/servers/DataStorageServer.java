@@ -2,12 +2,12 @@ package servers;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import Services.ProcessingService;
 import io.grpc.Grpc;
 import io.grpc.InsecureServerCredentials;
 import io.grpc.Server;
 import io.grpc.protobuf.services.ProtoReflectionService;
 import protos.ProcessingGrpc.ProcessingImplBase;
-import src.ProcessingService;
 
 public class DataStorageServer { // Boilerplate TODO: Change name of class
       private Server server;

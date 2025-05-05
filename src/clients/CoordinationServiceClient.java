@@ -158,7 +158,7 @@ public class CoordinationServiceClient {
             client.coordinationInitializer();
         	InputResponse inputs = client.provideInputSource();
         	if (inputs.getStatus().equals(Status.FAILURE)) {
-        		throw new Exception ("Bad Input (File not found or Invalid Input)");
+        		throw new Exception ("Bad Input(File not found or Invalid Input)");
         	}
         	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();

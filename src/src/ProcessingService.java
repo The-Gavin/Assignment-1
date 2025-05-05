@@ -52,7 +52,12 @@ public class ProcessingService extends ProcessingImplBase{
 			String line = sc.nextLine();
 			String[] nums = line.split(",");
 			for (String s: nums) {
-				list.add(Integer.parseInt(s));
+				try {
+					list.add(Integer.parseInt(s));
+				} catch (NumberFormatException e) {
+					sc.close();
+					return ReadResponse.newBuilder().setStatus(Status.FAILURE).build();
+				}
 			}
 		}
 		sc.close();

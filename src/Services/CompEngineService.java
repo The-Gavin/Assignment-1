@@ -3,6 +3,7 @@ package Services;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.grpc.stub.StreamObserver;
 import protos.FactorMachine.FactorResponse;
 import protos.FactorMachine.InitializationResponse;
 import protos.FactorMachine.IntList;
@@ -12,25 +13,29 @@ import protos.CompEngineGrpc.CompEngineImplBase;
 import protos.FactorMachine.Empty;
 
 public class CompEngineService extends CompEngineImplBase{
-	public InitializationResponse initializeComputation(Empty empty) {
+	public void initializeComputation(Empty empty, StreamObserver<InitializationResponse> responseObserver) {
 		// TODO Auto-generated method stub
-		return InitializationResponse.newBuilder()
+		responseObserver.onNext(InitializationResponse.newBuilder()
 				.setStatus(Status.SUCCESS)
-				.build();
+				.build());
+		responseObserver.onCompleted();
 	}
 
-	public FactorResponse readStream(StreamSource streamSource) {
-		List<Integer> values = streamSource.getValuesList();
+	public void readStream(StreamSource request, StreamObserver<FactorResponse> responseObserver) {
+		List<Integer> values = request.getValuesList();
 		FactorResponse.Builder messenger = FactorResponse.newBuilder();
 		if (values.isEmpty()) {
-			return FactorResponse.newBuilder().setStatus(Status.FAILURE).build();
+			FactorResponse response = FactorResponse.newBuilder().setStatus(Status.FAILURE).build();
+			responseObserver.onNext(response);
+			responseObserver.onCompleted();
 		}
 
 		for (int i = 0; i < values.size(); i++) {
 			messenger.addFactorLists(findFactors(values.get(i)));
 		}
 		
-		return messenger.build();
+		 responseObserver.onNext(messenger.build());
+		 responseObserver.onCompleted();
 	}
 
 	private IntList findFactors(int val){

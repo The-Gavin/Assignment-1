@@ -27,6 +27,7 @@ import protos.FactorMachine.InputResponse;
 import protos.FactorMachine.InputSource;
 import protos.FactorMachine.OutputDestination;
 import protos.FactorMachine.OutputResponse;
+import protos.FactorMachine.Status;
 
 public class CoordinationServiceClient {
     private final CoordinationServiceBlockingStub blockingStub; // Boilerplate TODO: update to appropriate blocking stub
@@ -156,11 +157,16 @@ public class CoordinationServiceClient {
         	CoordinationServiceClient client = new CoordinationServiceClient(channel); // Boilerplate TODO: update to this class name
             client.coordinationInitializer();
         	InputResponse inputs = client.provideInputSource();
+        	if (inputs.getStatus().equals(Status.FAILURE)) {
+        		throw new Exception("Bad Input(File not found or Invalid Input)");
+        	}
         	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();
         	System.out.print("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
         	startTime = System.currentTimeMillis();
         	client.factor(inputs, output);
+        } catch (Exception e) {
+        	System.out.println(e);
         } finally {
         	System.out.println(System.currentTimeMillis() - startTime);
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);

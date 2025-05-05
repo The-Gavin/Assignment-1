@@ -37,7 +37,6 @@ public class CoordinationServiceClient {
     }
     
     public InputResponse provideInputSource() {
-    	
     	String userInput = getInputs();
     	
     	InputSource source = InputSource.newBuilder().setFile(userInput).build();
@@ -57,15 +56,28 @@ public class CoordinationServiceClient {
     }
     
     public String getInputs() {
-    	String userInput = null;
-		while (userInput == null) {
+    	StringBuilder userInput = new StringBuilder();
+    	String path = null;
+		while (path == null) {
 			System.out.println("\nHow would you like to input your data?"
-				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1,2): ");
+				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1, 2): ");
 			Scanner sc = new Scanner(System.in);
 			switch (sc.nextInt()) {
 			case 1: {
-				System.out.println("Please input your numbers seperated by spaces: ");
-				userInput = sc.next();
+				System.out.println("Please input numbers (input \'-\' to end): ");
+				while(true) {
+					String input = sc.next();
+					if(input.equals("-")) {
+						break;
+					}else {
+						try {
+							int numInput = Integer.parseInt(input);
+							userInput.append(numInput + ",");
+						}catch(NumberFormatException e) {
+							System.out.print(input + " is not a number, ignoring input please continue inputting numbers (\'-\' to stop)");
+						}
+					}
+				}
 				List<Integer> userNumbers = new ArrayList<>();
 				
 				
@@ -74,10 +86,12 @@ public class CoordinationServiceClient {
 				tempFile.deleteOnExit();
 				
 				try {
+					System.out.println("Numbers given: " + userInput);
 					tempFile.createNewFile();
 					FileWriter encoder = new FileWriter(tempFile);
-					encoder.write(userInput);
-					userInput = tempFile.getPath();
+					encoder.write(userInput.toString());
+					path = tempFile.getPath();
+					encoder.close();
 				}catch (IOException e) {
 					System.out.print(e.toString());
 				}
@@ -86,9 +100,9 @@ public class CoordinationServiceClient {
 			}
 			case 2: {
 				System.out.println("Please Provide the file path:");
-				userInput = sc.next();
-				if (!(new File(userInput).exists())) {
-					userInput = null;
+				path = sc.next();
+				if (!(new File(path).exists())) {
+					path = null;
 					System.out.println("File could not be found please enter a valid path");
 				}
 				break;
@@ -98,7 +112,7 @@ public class CoordinationServiceClient {
 				break;
 			}
 		}
-		return userInput;
+		return path;
 	}
     
     public OutputResponse provideOutputDestination() {
@@ -158,7 +172,7 @@ public class CoordinationServiceClient {
             client.coordinationInitializer();
         	InputResponse inputs = client.provideInputSource();
         	if (inputs.getStatus().equals(Status.FAILURE)) {
-        		throw new Exception("Bad Input(File not found or Invalid Input)");
+        		throw new Exception("Bad input data");
         	}
         	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();

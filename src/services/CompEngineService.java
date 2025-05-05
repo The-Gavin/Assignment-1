@@ -40,19 +40,18 @@ public class CompEngineService extends CompEngineImplBase{
 
 	private IntList findFactors(int val){
 		List<Integer> factors = new ArrayList<>();
+		factors.add(1);
+		int di = 1;
 		if (val%2 != 0) {
-			for (int i = 1; i < val/2; i+=2) {
-				if (val%i == 0) {
-					factors.add(i);
-				}
-			}
-		} else {
-			for (int i = 1; i < val/2; i++) {
-				if (val%i == 0) {
-					factors.add(i);
-				}
-			}
+			di = 2;
+		}else {
+			factors.add(2);
 		}
+		for (int i = 3; i < (val/2)+1; i+=di) {
+			if (val%i == 0) {
+				factors.add(i);
+			}
+		} 
 		if (!factors.contains(val)) {
 			factors.add(val);
 		}

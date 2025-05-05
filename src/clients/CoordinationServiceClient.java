@@ -62,8 +62,8 @@ public class CoordinationServiceClient {
 			System.out.println("\nHow would you like to input your data?"
 				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1, 2): ");
 			Scanner sc = new Scanner(System.in);
-			switch (sc.nextInt()) {
-			case 1: {
+			switch (sc.next()) {
+			case "1": {
 				System.out.println("Please input numbers (input \'-\' to end): ");
 				while(true) {
 					String input = sc.next();
@@ -93,12 +93,12 @@ public class CoordinationServiceClient {
 					path = tempFile.getPath();
 					encoder.close();
 				}catch (IOException e) {
-					System.out.print(e.toString());
+					e.printStackTrace();;
 				}
 				
 				break;
 			}
-			case 2: {
+			case "2": {
 				System.out.println("Please Provide the file path:");
 				path = sc.next();
 				if (!(new File(path).exists())) {
@@ -116,8 +116,7 @@ public class CoordinationServiceClient {
 	}
     
     public OutputResponse provideOutputDestination() {
-    	System.out.print("Enter a output Destination: ");
-    	String path = new Scanner(System.in).next();
+    	String path = getOutput();
     	OutputDestination destination = OutputDestination.newBuilder()
     			.setPath(path).build();
     	OutputResponse response = null;
@@ -130,6 +129,43 @@ public class CoordinationServiceClient {
     	
     	System.out.println(response.getData());
     	return response;
+    }
+    
+    private String getOutput() {
+    	System.out.print("Enter a output Destination: ");
+    	String path = null;
+    	while(path == null) {
+    		Scanner sc = new Scanner(System.in);
+    		String userInput = sc.next();
+    		if(new File(userInput).exists()) {
+    			System.out.println("override " + userInput + " and fill with input factors? (Y/n)");
+    			while(true) {
+    				String confermation = sc.next();
+    				if(confermation.equals("Y")) {
+    					System.out.print("will override file");
+    					break;
+    				}else if(confermation.equals("n")) {
+    					int extIndex = userInput.lastIndexOf('.');
+    					if(extIndex == -1) {
+    						userInput+=1;
+    					}else {
+    						String ext = userInput.substring(extIndex);
+    						userInput = userInput.substring(0, extIndex) + 1 + ext;
+    					}
+    					System.out.print("Will save to " + userInput + "instead");
+    					path = userInput;
+    					break;
+    				}else {
+    					System.out.println("Please give a valid answer (Y/n)");
+    				}
+    			}
+    		}else {
+    			path = userInput;
+    		}
+    		sc.close();
+    	}
+    	
+    	return path;
     }
     
     public void coordinationInitializer() {
@@ -172,17 +208,17 @@ public class CoordinationServiceClient {
             client.coordinationInitializer();
         	InputResponse inputs = client.provideInputSource();
         	if (inputs.getStatus().equals(Status.FAILURE)) {
-        		throw new Exception("Bad input data");
+        		throw new Exception("Bad input data please try again");
         	}
         	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();
-        	System.out.print("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
+        	System.out.println("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
         	startTime = System.currentTimeMillis();
         	client.factor(inputs, output);
+        	System.out.println("Factors found and stored in" + output.getData() + "\n" + (System.currentTimeMillis() - startTime));
         } catch (Exception e) {
         	System.out.println(e);
         } finally {
-        	System.out.println(System.currentTimeMillis() - startTime);
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
     }

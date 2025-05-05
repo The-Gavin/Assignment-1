@@ -1,4 +1,4 @@
-package src;
+package services;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,19 +7,14 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
-import clients.CoordinationServiceClient;
-import interfaces.CompFactor;
-import interfaces.Processing;
-import interfaces.Response;
+import clients.CompEngineClient;
+import clients.DataStorageClient;
 import io.grpc.ChannelCredentials;
 import io.grpc.Grpc;
 import io.grpc.InsecureChannelCredentials;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
-import protos.CoordinationServiceGrpc;
 import protos.CoordinationServiceGrpc.CoordinationServiceImplBase;
 import protos.FactorMachine.InitializationRequest;
 import protos.FactorMachine.InitializationResponse;
@@ -29,34 +24,37 @@ import protos.FactorMachine.ReadResponse;
 import protos.FactorMachine.OutputDestination;
 import protos.FactorMachine.OutputResponse;
 import protos.FactorMachine.Status;
-import protos.ProcessingGrpc;
-import protos.ProcessingGrpc.ProcessingBlockingStub;
-import protos.ProcessingOuterClass;
 import protos.FactorMachine.FactorRequest;
 import protos.FactorMachine.FactorResponse;
-
+import protos.FactorMachine.StreamSource;
 import protos.ProcessingOuterClass.DataSource;
 import protos.ProcessingOuterClass.ReceiveResponse;
 
 public class CoordinationService extends CoordinationServiceImplBase{
 	
 	private static final int NUMBER_OF_THREADS = 20;
-	ProtoCompEngineComponent computationComponent;
-	ProcessingBlockingStub processingComponent;
+	private CompEngineClient computationClient;
+	private DataStorageClient dataClient;
 	
 	boolean initialize = false;
 
 	@Override
 	public void coordinationInitializer(InitializationRequest request,
 		StreamObserver<InitializationResponse> responseObserver) {
-		this.computationComponent = new ProtoCompEngineComponent();
 		
-		String target = "localHost:50051";
-		ChannelCredentials creds = InsecureChannelCredentials.create();
-        ManagedChannelBuilder<?> temp = Grpc.newChannelBuilder(target, creds);
-        ManagedChannel channel = temp.build();
+		String compTarget = "localHost:50053";
+		ChannelCredentials compCreds = InsecureChannelCredentials.create();
+        ManagedChannelBuilder<?> compTemp = Grpc.newChannelBuilder(compTarget, compCreds);
+        ManagedChannel compChannel = compTemp.build();
+		
+		this.computationClient = new CompEngineClient(compChannel);
+		
+		String dataTarget = "localHost:50052";
+		ChannelCredentials dataCreds = InsecureChannelCredentials.create();
+        ManagedChannelBuilder<?> temp = Grpc.newChannelBuilder(dataTarget, dataCreds);
+        ManagedChannel dataChannel = temp.build();
         
-		this.processingComponent = ProcessingGrpc.newBlockingStub(channel);
+		this.dataClient = new DataStorageClient(dataChannel);
 	    	
 	    InitializationResponse response = InitializationResponse.newBuilder()
 	    		.setStatus(Status.forNumber(1)).build();
@@ -71,9 +69,8 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	
 	@Override
 	public void provideInputSource(InputSource request, StreamObserver<InputResponse> responseObserver) {
-		ReadResponse returned = null;
-		InputResponse response = null;
-		returned = processingComponent.readData(request);
+		 InputResponse response = null;
+		 ReadResponse returned = dataClient.readData(request);
 		
 		if (returned.getStatus().equals(Status.SUCCESS)) {
 			response = InputResponse.newBuilder()
@@ -93,16 +90,16 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void provideOutputDestination(OutputDestination request, StreamObserver<OutputResponse> responseObserver) {
 		
-		OutputResponse outputSent = processingComponent.getOutputDestination(request);
+		OutputResponse outputSent = dataClient.getOutputDestination(request);
 		
 		
 		//OutputResponse response;
 		//if (outputSent.getStatus().equals(Response.Status.SUCCESS)) {
-			//response = OutputResponse.newBuilder().setStatus(Status.forNumber(1)).setData("Component recieved outputDestination").build();
+			//response = OutputResponse.newBuilder().setStatus(Status.forNumber(1)).setData("Client recieved outputDestination").build();
 		/*}else {
 			response = OutputResponse.newBuilder()
 					.setStatus(Status.forNumber(2))
-					.setData("Component could not recieve outputDestination")
+					.setData("Client could not recieve outputDestination")
 					.build();
 		}*/
 		responseObserver.onNext(outputSent);
@@ -112,7 +109,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	@Override
 	public void factor(FactorRequest request,
 	        StreamObserver<FactorResponse> responseObserver) {
-		StreamSource factorables = new StreamSource(request.getData().getDataList());
+		StreamSource factorables = StreamSource.newBuilder().addAllValues(request.getData().getDataList()).build();
 		FactorResponse factoringResponse = multiThreadFactoring(factorables);
 		
 		if (factoringResponse.getStatus().getNumber() != 1) {
@@ -122,7 +119,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				.addAllData(factoringResponse.getFactorListsList())
 				.setOutputPath(request.getPath())
 				.build(); 
-		 ReceiveResponse dataWritten = processingComponent.receiveData(factoredData);
+		 ReceiveResponse dataWritten = dataClient.receiveData(factoredData);
 			
 		responseObserver.onNext(FactorResponse.newBuilder().setStatus(Status.forNumber(1)).build());
 		responseObserver.onCompleted();
@@ -130,13 +127,13 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	}
 	
 	public FactorResponse multiThreadFactoring(StreamSource factors) throws RuntimeException{
-		int threadCount = Math.min(NUMBER_OF_THREADS, factors.getData().size());
+		int threadCount = Math.min(NUMBER_OF_THREADS, factors.getValuesCount());
 		ExecutorService threadPool = Executors.newFixedThreadPool(threadCount);
 		List<Future<?>> results = new ArrayList<>();
 		Queue<List<Integer>> singleLists = new LinkedList<>();
 		FactorResponse.Builder toReturn = FactorResponse.newBuilder().setStatus(Status.forNumber(1));
 		
-		List<Integer> data = factors.getData();
+		List<Integer> data = factors.getValuesList();
 		List<List<Integer>> slices = splitList(data);
 		
 		//makes list of single values need to adjust to split list into sublists
@@ -146,9 +143,9 @@ public class CoordinationService extends CoordinationServiceImplBase{
 		
 		System.out.println("Sending " + singleLists.size() + " Slices to be factored");
 		for (int i = 0; i < threadCount; i++) {
-			StreamSource number = new StreamSource(singleLists.poll());
+			StreamSource number = StreamSource.newBuilder().addAllValues(singleLists.poll()).build(); 
 			results.add(threadPool.submit(() -> 
-				computationComponent.readStream(number)));
+				computationClient.readStream(number)));
 		}
 		
 		results.forEach(future -> {

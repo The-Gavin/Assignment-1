@@ -53,6 +53,14 @@ message IntList {
 	repeated int32 nums = 1;
 }
 
+message StreamSource {
+	repeated int32 values = 1;
+}
+
+message Empty{
+
+}
+
 enum Status {
   UNKNOWN = 0;
   SUCCESS = 1;

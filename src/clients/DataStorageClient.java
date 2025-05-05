@@ -78,7 +78,7 @@ public class DataStorageClient {
 		OutputResponse response = null;
 		try {
 			response = blockingStub.getOutputDestination(outputdestination);
-		}catch(StatusRuntimeException e) {
+		}catch (StatusRuntimeException e) {
 			e.printStackTrace();
 		}
 		return response;

@@ -2,11 +2,11 @@ package servers;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import Services.CompEngineService;
 import io.grpc.Grpc;
 import io.grpc.InsecureServerCredentials;
 import io.grpc.Server;
 import io.grpc.protobuf.services.ProtoReflectionService;
+import services.CompEngineService;
 
 public class CompEngineServer { // Boilerplate TODO: Change name of class
       private Server server;

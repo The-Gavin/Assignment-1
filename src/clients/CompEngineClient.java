@@ -22,7 +22,7 @@ public class CompEngineClient {
     	InitializationResponse response = null;
     	try {
     	response = blockingStub.initializeComputation(Empty.newBuilder().build());
-    	}catch(StatusRuntimeException e){
+    	}catch (StatusRuntimeException e){
     		e.printStackTrace();
     	}
     	return response;
@@ -32,7 +32,7 @@ public class CompEngineClient {
     	FactorResponse response = null;
     	try {
     	response = blockingStub.readStream(streamSource);
-    	}catch(StatusRuntimeException e){
+    	}catch (StatusRuntimeException e){
     		e.printStackTrace();
     	}
     	return response;

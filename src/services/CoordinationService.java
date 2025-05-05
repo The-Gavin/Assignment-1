@@ -1,4 +1,4 @@
-package Services;
+package services;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -69,8 +69,8 @@ public class CoordinationService extends CoordinationServiceImplBase{
 	
 	@Override
 	public void provideInputSource(InputSource request, StreamObserver<InputResponse> responseObserver) {
-		ReadResponse returned = null;
-		returned = dataClient.readData(request);
+		 InputResponse response = null;
+		 ReadResponse returned = dataClient.readData(request);
 		
 		if (returned.getStatus().equals(Status.SUCCESS)) {
 			response = InputResponse.newBuilder()
@@ -119,7 +119,7 @@ public class CoordinationService extends CoordinationServiceImplBase{
 				.addAllData(factoringResponse.getFactorListsList())
 				.setOutputPath(request.getPath())
 				.build(); 
-		 ReceiveResponse dataWritten = dataClient.receiveData(facotoredData);
+		 ReceiveResponse dataWritten = dataClient.receiveData(factoredData);
 			
 		responseObserver.onNext(FactorResponse.newBuilder().setStatus(Status.forNumber(1)).build());
 		responseObserver.onCompleted();

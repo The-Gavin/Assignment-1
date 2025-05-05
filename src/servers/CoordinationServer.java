@@ -2,8 +2,6 @@ package servers;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import Services.CoordinationService;
-import Services.ProcessingService;
 import clients.DataStorageClient;
 import io.grpc.ChannelCredentials;
 import io.grpc.Grpc;
@@ -16,6 +14,8 @@ import io.grpc.channelz.v1.Channel;
 import io.grpc.protobuf.services.ProtoReflectionService;
 import protos.CoordinationServiceGrpc.CoordinationServiceImplBase;
 import protos.ProcessingGrpc.ProcessingImplBase;
+import services.CoordinationService;
+import services.ProcessingService;
 
 public class CoordinationServer { // Boilerplate TODO: Change name of class
       private Server server;

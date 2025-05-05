@@ -2,9 +2,15 @@ package servers;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import clients.DataStorageClient;
+import io.grpc.ChannelCredentials;
 import io.grpc.Grpc;
+import io.grpc.InsecureChannelCredentials;
 import io.grpc.InsecureServerCredentials;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
+import io.grpc.channelz.v1.Channel;
 import io.grpc.protobuf.services.ProtoReflectionService;
 import protos.CoordinationServiceGrpc.CoordinationServiceImplBase;
 import protos.ProcessingGrpc.ProcessingImplBase;
@@ -13,13 +19,13 @@ import src.ProcessingService;
 
 public class CoordinationServer { // Boilerplate TODO: Change name of class
       private Server server;
-
+      private DataStorageClient dataClient;
+      
       private void start() throws IOException {
         
         int port = 50051;
         
         server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
-        	.addService(new ProcessingService().bindService())
         	.addService(new CoordinationService().bindService()) // Boilerplate TODO: Change name of class
             .addService(ProtoReflectionService.newInstance())
             .build()

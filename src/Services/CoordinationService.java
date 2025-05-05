@@ -1,4 +1,4 @@
-package src;
+package Services;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -38,6 +38,8 @@ import protos.FactorMachine.FactorResponse;
 
 import protos.ProcessingOuterClass.DataSource;
 import protos.ProcessingOuterClass.ReceiveResponse;
+import src.ProtoCompEngineComponent;
+import src.StreamSource;
 
 public class CoordinationService extends CoordinationServiceImplBase{
 	

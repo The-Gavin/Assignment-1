@@ -8,9 +8,10 @@ import protos.FactorMachine.InitializationResponse;
 import protos.FactorMachine.IntList;
 import protos.FactorMachine.Status;
 import protos.FactorMachine.StreamSource;
+import protos.CompEngineGrpc.CompEngineImplBase;
 import protos.FactorMachine.Empty;
 
-public class CompEngineService {
+public class CompEngineService extends CompEngineImplBase{
 	public InitializationResponse initializeComputation(Empty empty) {
 		// TODO Auto-generated method stub
 		return InitializationResponse.newBuilder()

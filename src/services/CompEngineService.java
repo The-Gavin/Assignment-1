@@ -34,7 +34,7 @@ public class CompEngineService extends CompEngineImplBase{
 		for (int i = 0; i < values.size(); i++) {
 			int num = values.get(i);
 			IntList.Builder factors = findFactors(Math.abs(num));
-			if(num < 0) {
+			if (num < 0) {
 				List<Integer> negativeFactors = factors.getNumsList();
 				negativeFactors = negativeFactors.stream().map(fact -> fact * -1).collect(Collectors.toList());
 				factors.addAllNums(negativeFactors);

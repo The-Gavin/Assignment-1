@@ -74,26 +74,24 @@ public class CoordinationServiceClient {
 							int numInput = Integer.parseInt(input);
 							userInput.append(numInput + ",");
 						}catch(NumberFormatException e) {
-							System.out.print(input + " is not a number, ignoring input please continue inputting numbers (\'-\' to stop)");
+							System.out.println(input + " is not a number, ignoring input please continue inputting numbers (\'-\' to stop)");
 						}
 					}
 				}
+				
 				List<Integer> userNumbers = new ArrayList<>();
-				
-				
 				File tempFile = new File("." + File.separatorChar + "input.csv");
-				
 				tempFile.deleteOnExit();
 				
 				try {
-					System.out.println("Numbers given: " + userInput);
+					System.out.println("Numbers given: " + userInput + "\nCreating temporary file");
 					tempFile.createNewFile();
 					FileWriter encoder = new FileWriter(tempFile);
 					encoder.write(userInput.toString());
 					path = tempFile.getPath();
 					encoder.close();
 				}catch (IOException e) {
-					e.printStackTrace();;
+					System.out.println("Unable to create temporary file");
 				}
 				
 				break;
@@ -108,7 +106,7 @@ public class CoordinationServiceClient {
 				break;
 			}
 			default:
-				System.out.print("Please Choose a proper option(1,2)");
+				System.out.print("Please choose a proper option");
 				break;
 			}
 		}
@@ -141,7 +139,7 @@ public class CoordinationServiceClient {
     				System.out.println("do you wish to overwrite " + userInput + " and fill with factors? (Y/n)");
     				String confirmation = sc.next();
     				if(confirmation.equals("Y")) {
-    					System.out.print("will overwrite file ");
+    					System.out.println("File will be overwritten");
     					path = userInput;
     					break;
     				}else if(confirmation.equals("n")) {
@@ -236,10 +234,9 @@ public class CoordinationServiceClient {
         	}
         	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();
-        	System.out.println("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
-        	startTime = System.currentTimeMillis();
+        	System.out.println("About to begin processing this could take a while, given" + inputs.getDataCount() + " numbers to be factored");
         	client.factor(inputs, output);
-        	System.out.println("Factors found and stored in " + output.getData() + " in " + (System.currentTimeMillis() - startTime) + "milliseconds");
+        	System.out.println("Factors found and stored in " + output.getData());
         } catch (Exception e) {
         	System.out.println(e);
         } finally {

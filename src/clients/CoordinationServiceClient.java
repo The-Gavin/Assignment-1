@@ -127,36 +127,29 @@ public class CoordinationServiceClient {
     		e.printStackTrace();
     	}
     	
-    	System.out.println(response.getData());
     	return response;
     }
     
     private String getOutput() {
-    	System.out.print("Enter a output Destination: ");
+    	System.out.println("Enter a output Destination: ");
     	String path = null;
     	while(path == null) {
     		Scanner sc = new Scanner(System.in);
     		String userInput = sc.next();
     		if(new File(userInput).exists()) {
-    			System.out.println("override " + userInput + " and fill with input factors? (Y/n)");
     			while(true) {
-    				String confermation = sc.next();
-    				if(confermation.equals("Y")) {
-    					System.out.print("will override file");
-    					break;
-    				}else if(confermation.equals("n")) {
-    					int extIndex = userInput.lastIndexOf('.');
-    					if(extIndex == -1) {
-    						userInput+=1;
-    					}else {
-    						String ext = userInput.substring(extIndex);
-    						userInput = userInput.substring(0, extIndex) + 1 + ext;
-    					}
-    					System.out.print("Will save to " + userInput + "instead");
+    				System.out.println("do you wish to overwrite " + userInput + " and fill with factors? (Y/n)");
+    				String confirmation = sc.next();
+    				if(confirmation.equals("Y")) {
+    					System.out.print("will overwrite file ");
     					path = userInput;
     					break;
+    				}else if(confirmation.equals("n")) {
+    					path = makeSecondFile(userInput);
+    					System.out.println("Will save to " + path + " instead");
+    					break;
     				}else {
-    					System.out.println("Please give a valid answer (Y/n)");
+    					System.out.println("Please give a valid answer");
     				}
     			}
     		}else {
@@ -167,6 +160,37 @@ public class CoordinationServiceClient {
     	
     	return path;
     }
+
+    //If user does not wish to override file we make a new file same name with suffix
+	private String makeSecondFile(String userInput) {
+		//checks if user provided file extension and splits name from extension
+		String[] splits = userInput.split("\\.");
+		String name = splits[0];
+		String ext = "";
+		if(splits.length > 1) {
+			ext = "." + splits[splits.length-1];
+		}
+		
+		//checks if file already has numerical suffix adds one if there isn't, increments if there is
+		int leftParentheses = name.lastIndexOf("(");
+		int rightParentheses = name.lastIndexOf(")");
+		if(leftParentheses == -1 || rightParentheses == -1) {
+			name+="(1)";
+		}
+		else {
+			try {
+				int oldVersion = Integer.parseInt(
+						name.substring(leftParentheses+1, rightParentheses));
+				int newVersion = oldVersion+1;
+				
+				name = name.replace(String.valueOf(oldVersion), String.valueOf(newVersion));
+			}catch(NumberFormatException e) {
+					//if file name has non numeric values between parentheses
+				
+			}
+		}
+		return name + ext;
+	}
     
     public void coordinationInitializer() {
     	InitializationRequest request = InitializationRequest.newBuilder().build();
@@ -215,7 +239,7 @@ public class CoordinationServiceClient {
         	System.out.println("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
         	startTime = System.currentTimeMillis();
         	client.factor(inputs, output);
-        	System.out.println("Factors found and stored in" + output.getData() + "\n" + (System.currentTimeMillis() - startTime));
+        	System.out.println("Factors found and stored in " + output.getData() + " in " + (System.currentTimeMillis() - startTime) + "milliseconds");
         } catch (Exception e) {
         	System.out.println(e);
         } finally {

@@ -37,7 +37,7 @@ public class CoordinationServiceClient {
     }
     
     public InputResponse provideInputSource() {
-    	
+    	//Gets either input file location or input data from the user
     	String userInput = getInputs();
     	
     	InputSource source = InputSource.newBuilder().setFile(userInput).build();
@@ -57,53 +57,66 @@ public class CoordinationServiceClient {
     }
     
     public String getInputs() {
-    	String userInput = null;
-		while (userInput == null) {
+    	String path = null;
+		while (path == null) {
 			System.out.println("\nHow would you like to input your data?"
-				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1,2): ");
+				+ "\n1. Manual input \n2. Provie file path\nEnter a number(1, 2): ");
 			Scanner sc = new Scanner(System.in);
-			switch (sc.nextInt()) {
-			case 1: {
-				System.out.println("Please input your numbers seperated by spaces: ");
-				userInput = sc.next();
+			switch (sc.next()) {
+			// If user wants to enter numbers
+			case "1": {
+				StringBuilder userInput = new StringBuilder();
+				System.out.println("Please input numbers (input \'-\' to end): ");
+				while (true) {
+					String input = sc.next();
+					if (input.equals("-")) {
+						break;
+					}else {
+						try {
+							int numInput = Integer.parseInt(input);
+							userInput.append(numInput + ",");
+						}catch (NumberFormatException e) {
+							System.out.println(input + " is not a number, ignoring input please continue inputting numbers (\'-\' to stop)");
+						}
+					}
+				}
+				//makes temp file that will be deleted on exit and stores inputs there
 				List<Integer> userNumbers = new ArrayList<>();
-				
-				
 				File tempFile = new File("." + File.separatorChar + "input.csv");
-				
 				tempFile.deleteOnExit();
 				
 				try {
+					System.out.println("Numbers given: " + userInput + "\nCreating temporary file");
 					tempFile.createNewFile();
 					FileWriter encoder = new FileWriter(tempFile);
-					encoder.write(userInput);
-					userInput = tempFile.getPath();
+					encoder.write(userInput.toString());
+					path = tempFile.getPath();
+					encoder.close();
 				}catch (IOException e) {
-					System.out.print(e.toString());
+					System.out.println("Unable to create temporary file");
 				}
 				
 				break;
 			}
-			case 2: {
+			case "2": {
 				System.out.println("Please Provide the file path:");
-				userInput = sc.next();
-				if (!(new File(userInput).exists())) {
-					userInput = null;
+				path = sc.next();
+				if (!(new File(path).exists())) {
+					path = null;
 					System.out.println("File could not be found please enter a valid path");
 				}
 				break;
 			}
 			default:
-				System.out.print("Please Choose a proper option(1,2)");
+				System.out.print("Please choose a proper option");
 				break;
 			}
 		}
-		return userInput;
+		return path;
 	}
     
     public OutputResponse provideOutputDestination() {
-    	System.out.print("Enter a output Destination: ");
-    	String path = new Scanner(System.in).next();
+    	String path = getOutput();
     	OutputDestination destination = OutputDestination.newBuilder()
     			.setPath(path).build();
     	OutputResponse response = null;
@@ -114,9 +127,70 @@ public class CoordinationServiceClient {
     		e.printStackTrace();
     	}
     	
-    	System.out.println(response.getData());
     	return response;
     }
+    
+    //Gets output file path or makes output file;
+    private String getOutput() {
+    	System.out.println("Enter a output Destination: ");
+    	String path = null;
+    	while (path == null) {
+    		Scanner sc = new Scanner(System.in);
+    		String userInput = sc.next();
+    		if (new File(userInput).exists()) {
+    			while (true) {
+    				System.out.println("do you wish to overwrite " + userInput + " and fill with factors? (Y/n)");
+    				String confirmation = sc.next();
+    				if (confirmation.equals("Y")) {
+    					System.out.println("File will be overwritten");
+    					path = userInput;
+    					break;
+    				}else if (confirmation.equals("n")) {
+    					path = makeSecondFile(userInput);
+    					System.out.println("Will save to " + path + " instead");
+    					break;
+    				}else {
+    					System.out.println("Please give a valid answer");
+    				}
+    			}
+    		}else {
+    			path = userInput;
+    		}
+    		sc.close();
+    	}
+    	
+    	return path;
+    }
+
+    //If user does not wish to override file we make a new file same name with suffix
+	private String makeSecondFile(String userInput) {
+		//checks if user provided file extension and splits name from extension
+		String[] splits = userInput.split("\\.");
+		String name = splits[0];
+		String ext = "";
+		if (splits.length > 1) {
+			ext = "." + splits[splits.length-1];
+		}
+		
+		//checks if file already has numerical suffix adds one if there isn't, increments if there is
+		int leftParentheses = name.lastIndexOf("(");
+		int rightParentheses = name.lastIndexOf(")");
+		if (leftParentheses == -1 || rightParentheses == -1) {
+			name+="(1)";
+		}else {
+			try {
+				int oldVersion = Integer.parseInt(
+						name.substring(leftParentheses+1, rightParentheses));
+				int newVersion = oldVersion+1;
+				
+				name = name.replace(String.valueOf(oldVersion), String.valueOf(newVersion));
+			}catch (NumberFormatException e) {
+					//if file name has non numeric values between parentheses
+					name += (1);
+			}
+		}
+		return name + ext;
+	}
     
     public void coordinationInitializer() {
     	InitializationRequest request = InitializationRequest.newBuilder().build();
@@ -158,17 +232,16 @@ public class CoordinationServiceClient {
             client.coordinationInitializer();
         	InputResponse inputs = client.provideInputSource();
         	if (inputs.getStatus().equals(Status.FAILURE)) {
-        		throw new Exception("Bad Input(File not found or Invalid Input)");
+        		throw new Exception("Bad input data please try again");
         	}
         	System.out.println("Inputs recieved and process");
         	OutputResponse output = client.provideOutputDestination();
-        	System.out.print("About to begin processing this could take a while \n " + inputs.getDataCount() + " numbers to be factored");
-        	startTime = System.currentTimeMillis();
+        	System.out.println("About to begin processing this could take a while, given " + inputs.getDataCount() + " numbers to be factored");
         	client.factor(inputs, output);
+        	System.out.println("Factors found and stored in " + output.getData());
         } catch (Exception e) {
         	System.out.println(e);
         } finally {
-        	System.out.println(System.currentTimeMillis() - startTime);
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
     }

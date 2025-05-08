@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.grpc.stub.StreamObserver;
 import protos.FactorMachine.FactorResponse;
@@ -31,31 +32,38 @@ public class CompEngineService extends CompEngineImplBase{
 		}
 
 		for (int i = 0; i < values.size(); i++) {
-			messenger.addFactorLists(findFactors(values.get(i)));
+			int num = values.get(i);
+			IntList.Builder factors = findFactors(Math.abs(num));
+			if (num < 0) {
+				List<Integer> negativeFactors = factors.getNumsList();
+				negativeFactors = negativeFactors.stream().map(fact -> fact * -1).collect(Collectors.toList());
+				factors.addAllNums(negativeFactors);
+			}
+			factors.build();
+			messenger.addFactorLists(factors);
 		}
 		
 		 responseObserver.onNext(messenger.build());
 		 responseObserver.onCompleted();
 	}
 
-	private IntList findFactors(int val){
+	private IntList.Builder findFactors(int val){
 		List<Integer> factors = new ArrayList<>();
+		factors.add(1);
+		int di = 1;
 		if (val%2 != 0) {
-			for (int i = 1; i < val/2; i+=2) {
-				if (val%i == 0) {
-					factors.add(i);
-				}
-			}
-		} else {
-			for (int i = 1; i < val/2; i++) {
-				if (val%i == 0) {
-					factors.add(i);
-				}
-			}
+			di = 2;
+		}else {
+			factors.add(2);
 		}
+		for (int i = 3; i < (val/2)+1; i+=di) {
+			if (val%i == 0) {
+				factors.add(i);
+			}
+		} 
 		if (!factors.contains(val)) {
 			factors.add(val);
 		}
-		return IntList.newBuilder().addAllNums(factors).build();
+		return IntList.newBuilder().addAllNums(factors);
 	}	
 }
